@@ -7,10 +7,18 @@
 </head>
 <body>
     <table>
+        <tr>
+            <th>Module Code</th>
+            <th>Module Name</th>
+            <th>Attendance %</th>
+            <th>Attended / Total</th>
+        </tr>
         {{#modules}}
         <tr>
             <td>{{code}}</td>
             <td>{{title}}</td>
+            <td>{{#attendance}}{{attendance}}%{{/attendance}}</td>
+            <td>{{#numLecturesAttended}}{{numLecturesAttended}}/{{numLecturesTotal}}{{/numLecturesAttended}}</td>
         </tr>
         {{/modules}}
     </table>

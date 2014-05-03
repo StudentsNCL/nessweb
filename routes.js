@@ -31,7 +31,7 @@ exports.login_post = function(req, res) {
 };
 
 exports.modules = function(req, res) {
-    ness.getModules([], function(err, modules) {
+    ness.getModules('attendance', function(err, modules) {
         var stream = mu.compileAndRender('modules.html', {
                         modules: modules
                 });
