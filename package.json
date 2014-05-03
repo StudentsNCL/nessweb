@@ -1,0 +1,24 @@
+{
+  "name": "nessweb",
+  "version": "0.0.0",
+  "description": "Ness Web App using nessjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/StudentsNCL/nessweb.js"
+  },
+  "author": "",
+  "license": "BSD",
+  "bugs": {
+    "url": "https://github.com/StudentsNCL/nessweb.js/issues"
+  },
+  "homepage": "https://github.com/StudentsNCL/nessweb.js",
+  "dependencies": {
+    "express": "^4.1.1",
+    "mu2": "^0.5.20",
+    "nessjs": "git://github.com/StudentsNCL/nessjs.git"
+  }
+}
