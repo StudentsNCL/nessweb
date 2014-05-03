@@ -11,10 +11,4 @@ Usage
 
     node server.js
     
-    Open localhost?user=<YOUR_USER_ID>&pass=<YOUR_PASSWORD> in web browser
-    
-    This is a temporary login setup, and you should probably use private browsing
-    so your password is not saved in browser history.
-
-
-
+Open [localhost:8080](http://localhost:8080) in a web browser.
