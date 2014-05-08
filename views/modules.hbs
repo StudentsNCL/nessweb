@@ -1,0 +1,16 @@
+<table>
+    <tr>
+        <th>Module Code</th>
+        <th>Module Name</th>
+        <th>Attendance %</th>
+        <th>Attended / Total</th>
+    </tr>
+    {{#each modules}}
+    <tr>
+        <td>{{code}}</td>
+        <td>{{title}}</td>
+        <td>{{#if attendance}}{{attendance}}%{{/if}}</td>
+        <td>{{#if numLecturesAttended}}{{numLecturesAttended}}/{{numLecturesTotal}}{{/if}}</td>
+    </tr>
+    {{/each}}
+</table>

@@ -4,14 +4,25 @@ var http = require('http'),
     session = require('express-session'),
     connect = require('connect'),
     routes = require('./routes'),
-    auth = require('./auth');
-    
+    auth = require('./auth'),
+    handlebars = require('express3-handlebars');
 var app = express();
 
 app.use(express.static(__dirname, '/public'));
 app.use(cookieParser())
 app.use(session({secret: 'winter is coming' }));
 app.use(connect.bodyParser());
+
+app.engine('.hbs', handlebars({
+    defaultLayout: 'main',
+    layoutsDir: 'views/layouts/',
+    extname: '.hbs',
+    helpers: {
+    },
+}));
+
+app.set('view engine', '.hbs');
+app.set('views', 'views/');
 
 app.get('/', auth, routes.index);
 app.get('/login', routes.login_get);

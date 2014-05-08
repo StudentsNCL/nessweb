@@ -12,16 +12,12 @@ mu.root = __dirname + '/templates';
 
 exports.index = function(req, res) {
     ness.getName(function(err, name) {
-        var stream = mu.compileAndRender('index.html', {
-                        name: name
-                });
-        stream.pipe(res);
+        res.render('index', {name: name});
     });
 };
 
 exports.login_get = function(req, res) {
-    var stream = mu.compileAndRender('login.html', {});
-    stream.pipe(res);
+    res.render('login');
 };
 
 exports.login_post = function(req, res) {
@@ -32,9 +28,6 @@ exports.login_post = function(req, res) {
 
 exports.modules = function(req, res) {
     ness.getModules('attendance', function(err, modules) {
-        var stream = mu.compileAndRender('modules.html', {
-                        modules: modules
-                });
-        stream.pipe(res);
+        res.render('modules', {modules: modules});
     });
 };
