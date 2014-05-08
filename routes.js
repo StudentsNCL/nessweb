@@ -1,14 +1,5 @@
 var ness = require('nessjs'),
-    mu = require('mu2'),
-    http = require('http'),
-    express = require('express'),
-    cookieParser = require('cookie-parser'),
-    session = require('express-session'),
-    connect = require('connect'),
-    routes = require('./routes'),
-    auth = require('./auth');
-
-mu.root = __dirname + '/templates';
+    session = require('express-session');
 
 exports.index = function(req, res) {
     ness.getName(function(err, name) {
