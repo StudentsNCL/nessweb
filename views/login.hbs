@@ -1,6 +1,7 @@
 <p>Enter your university login name and password to connect to NESS</p>
+{{#if failed}}<p>We had trouble logging you in. Please try again.</p>{{/if}}
 <form method="post">
-    UserName: <input type="text" name="user" placeholder="b20xxxxx" />
+    UserName: <input type="text" name="user" placeholder="b20xxxxx" value="{{user}}" />
     Password: <input type="password" name="pass" />
     <input type="submit" value="Login" />
 </form>
