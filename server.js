@@ -8,7 +8,7 @@ var http = require('http'),
     handlebars = require('express3-handlebars');
 var app = express();
 
-app.use(express.static(__dirname, '/public'));
+app.use(express.static('public'));
 app.use(cookieParser())
 app.use(session({secret: 'winter is coming' }));
 app.use(bodyParser());
