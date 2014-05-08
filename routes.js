@@ -13,8 +13,12 @@ exports.index = function(req, res) {
 
 exports.login_get = function(req, res) {
     var failed_login = req.session.failed_login;
-    req.session.fail = null;
-    res.render('login', {user: req.session.user, failed: failed_login});
+    req.session.failed_login = null;
+    res.render('login', {
+        user: req.session.user,
+        failed: failed_login,
+        layout: 'login'
+    });
 };
 
 exports.login_post = function(req, res) {

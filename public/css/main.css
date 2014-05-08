@@ -1,3 +1,8 @@
-p {
-    color:red;
+.form-signin {
+  padding-top: 50px;
+  text-align: center;
+}
+
+.container-main {
+  margin-top: 60px;
 }
