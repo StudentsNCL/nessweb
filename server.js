@@ -2,7 +2,7 @@ var http = require('http'),
     express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
-    connect = require('connect'),
+    bodyParser = require('body-parser'),
     routes = require('./routes'),
     auth = require('./auth'),
     handlebars = require('express3-handlebars');
@@ -11,7 +11,7 @@ var app = express();
 app.use(express.static(__dirname, '/public'));
 app.use(cookieParser())
 app.use(session({secret: 'winter is coming' }));
-app.use(connect.bodyParser());
+app.use(bodyParser());
 
 app.engine('.hbs', handlebars({
     defaultLayout: 'main',
