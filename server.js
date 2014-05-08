@@ -18,4 +18,4 @@ app.get('/login', routes.login_get);
 app.post('/login', routes.login_post);
 app.get('/modules', auth, routes.modules);
 
-app.listen(8080);
+app.listen(80);

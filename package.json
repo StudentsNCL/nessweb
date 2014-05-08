@@ -8,20 +8,20 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/StudentsNCL/nessweb.js"
+    "url": "git://github.com/StudentsNCL/nessweb.git"
   },
   "author": "",
   "license": "BSD",
   "bugs": {
-    "url": "https://github.com/StudentsNCL/nessweb.js/issues"
+    "url": "https://github.com/StudentsNCL/nessweb/issues"
   },
-  "homepage": "https://github.com/StudentsNCL/nessweb.js",
+  "homepage": "https://github.com/StudentsNCL/nessweb",
   "dependencies": {
     "connect": "^2.14.5",
     "cookie-parser": "^1.0.1",
     "express": "^4.1.1",
     "express-session": "^1.0.4",
     "mu2": "^0.5.20",
-    "nessjs": "git://github.com/StudentsNCL/nessjs.git"
+    "nessjs": "https://github.com/StudentsNCL/nessjs/tarball/master"
   }
 }
