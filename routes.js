@@ -46,7 +46,13 @@ exports.modules = function(req, res) {
 };
 
 exports.coursework = function(req, res) {
-    res.render('coursework/overview');
+    ness.getModules('coursework', req.session.user, function(err, result) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
+        res.render('coursework/overview', {coursework: result});
+    });
 }
 
 exports.coursework.calendar = function(req, res) {
