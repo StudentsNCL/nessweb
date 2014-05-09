@@ -41,4 +41,18 @@ app.get('/modules', auth, routes.modules);
 app.get('/coursework', auth, routes.coursework);
 app.get('/attendance', auth, routes.attendance);
 
+// throw a 404 if we get to here
+app.use(function(req, res, next) {
+    res.locals.title = '404 - Not Found';
+    res.locals.error = 'Could not find this page'
+    if (req.session.user && req.session.user.name) {
+        res.locals.user = req.session.user;
+    }
+    else {
+        res.locals.layout = 'login';
+    }
+    res.status(404).render('error');
+    return;
+});
+
 app.listen(80);
