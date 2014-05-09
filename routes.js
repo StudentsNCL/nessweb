@@ -4,7 +4,7 @@ var ness = require('nessjs'),
 exports.login_get = function(req, res) {
     var failed_login = req.session.failed_login;
     req.session.failed_login = false;
-    res.render('login', {layout: 'login', failed: failed_login});
+    res.render('login', {layout: 'login', failed: failed_login, user: req.session.user});
 };
 
 exports.login_post = function(req, res) {
@@ -51,6 +51,6 @@ exports.coursework = function(req, res) {
 
 var logout = function (req, res) {
     var id = req.session.user.id;
-    req.session.user = null;
+    req.session.user = {id: id};
     res.redirect('/login');
 };
