@@ -38,17 +38,23 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="{{#eq section 'modules'}}active{{/eq}}"><a href="/modules">Modules</a></li>
-                        <li class="{{#eq section 'coursework'}}active{{/eq}}"><a href="/coursework">Coursework</a></li>
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle {{#eq section 'coursework'}}active{{/eq}}" data-toggle="dropdown">Coursework <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/coursework/overview"><span class="glyphicon glyphicon-th-list"></span> Overview</a></li>
+                                <li><a href="/coursework/calendar"><span class="glyphicon glyphicon-calendar"></span> Calenedar</a></li>
+                            </ul>
+                        </li>
                         <li class="{{#eq section 'attendance'}}active{{/eq}}"><a href="/attendance">Attendance</a></li>
                     </ul>
 
                     <ul class="nav navbar-nav navbar-right">
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{user.name}} &nbsp;<span class="glyphicon glyphicon-user"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Settings</a></li>
+                                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
                                 <li class="divider"></li>
-                                <li><a href="/logout">Logout</a></li>
+                                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
                             </ul>
                         </li>
                     </ul>
