@@ -11,8 +11,8 @@
             <tr>
                 <td>{{code}}</td>
                 <td>{{title}}</td>
-                <td>{{#if attendance}}{{attendance}}%{{/if}}</td>
-                <td>{{#if numLecturesAttended}}{{numLecturesAttended}}/{{numLecturesTotal}}{{/if}}</td>
+                <td>{{#if attendance}}{{attendance}}%{{else}}-{{/if}}</td>
+                <td>{{#if numLecturesAttended}}{{numLecturesAttended}}/{{numLecturesTotal}}{{else}}-{{/if}}</td>
             </tr>
             {{/each}}
         </table>
