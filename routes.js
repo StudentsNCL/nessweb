@@ -14,7 +14,6 @@ exports.login_post = function(req, res) {
     };
 
     req.session.user = user;
-    console.log('Logging in with:' + req.session.user.id);
 
     ness.getName(user, function(err, name) {
         if (err) {
