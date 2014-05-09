@@ -39,6 +39,7 @@ app.get('/logout', routes.logout);
 app.post('/login', routes.login_post);
 app.get('/modules', auth, routes.modules);
 app.get('/coursework', auth, routes.coursework);
+app.get('/coursework/calendar', auth, routes.coursework.calendar);
 app.get('/attendance', auth, routes.attendance);
 
 // throw a 404 if we get to here

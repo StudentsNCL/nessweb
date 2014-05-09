@@ -46,7 +46,11 @@ exports.modules = function(req, res) {
 };
 
 exports.coursework = function(req, res) {
-    res.render('coursework');
+    res.render('coursework/overview');
+}
+
+exports.coursework.calendar = function(req, res) {
+    res.render('coursework/calendar');
 }
 
 var logout = function (req, res) {
