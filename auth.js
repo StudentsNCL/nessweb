@@ -1,10 +1,9 @@
 var ness = require('nessjs');
 module.exports = function (req, res, next) {
-    if(req.session.user == null || req.session.pass == null){
+    if (!req.session.user || !req.session.user.name) {
         res.redirect('/login');
         return;
     }
-    ness.user(req.session.user);
-    ness.pass(req.session.pass);
+    res.locals.user = req.session.user;
     next();
 }

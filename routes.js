@@ -1,38 +1,47 @@
 var ness = require('nessjs'),
     session = require('express-session');
 
-exports.index = function(req, res) {
-    ness.getName(function(err, name) {
-        if (err) {
-            req.session.failed_login = true;
-            return res.redirect('/login');
-        }
-        res.render('index', {name: name});
-    });
-};
-
 exports.login_get = function(req, res) {
     var failed_login = req.session.failed_login;
-    req.session.failed_login = null;
-    res.render('login', {
-        user: req.session.user,
-        failed: failed_login,
-        layout: 'login'
-    });
+    req.session.failed_login = false;
+    res.render('login', {layout: 'login', failed: failed_login});
 };
 
 exports.login_post = function(req, res) {
-    req.session.user = req.body.user;
-    req.session.pass = req.body.pass;
-    res.redirect('/');
-};
+    var user = {
+        id: req.body.id,
+        pass: req.body.pass
+    };
 
-exports.modules = function(req, res) {
-    ness.getModules('attendance', function(err, modules) {
+    req.session.user = user;
+    console.log('Logging in with:' + req.session.user.id);
+
+    ness.getName(user, function(err, name) {
         if (err) {
             req.session.failed_login = true;
             return res.redirect('/login');
         }
+        req.session.user.name = name;
+        res.redirect('/');
+    });
+};
+
+exports.modules = function(req, res) {
+    ness.getModules('attendance', req.session.user, function(err, modules) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
         res.render('modules', {modules: modules});
     });
+};
+
+exports.logout = function (req, res) {
+    logout(req, res);
+};
+
+var logout = function (req, res) {
+    var id = req.session.user.id;
+    req.session.user = null;
+    res.redirect('/login');
 };

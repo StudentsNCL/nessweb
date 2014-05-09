@@ -24,8 +24,11 @@ app.engine('.hbs', handlebars({
 app.set('view engine', '.hbs');
 app.set('views', 'views/');
 
-app.get('/', auth, routes.index);
+app.get('/', function(req, res){
+    res.redirect('/modules');
+});
 app.get('/login', routes.login_get);
+app.get('/logout', routes.logout);
 app.post('/login', routes.login_post);
 app.get('/modules', auth, routes.modules);
 
