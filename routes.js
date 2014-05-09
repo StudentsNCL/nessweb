@@ -26,19 +26,27 @@ exports.login_post = function(req, res) {
     });
 };
 
-exports.modules = function(req, res) {
+exports.logout = function (req, res) {
+    logout(req, res);
+};
+
+exports.attendance = function(req, res) {
     ness.getModules('attendance', req.session.user, function(err, modules) {
         if (err) {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('modules', {modules: modules});
+        res.render('attendance', {modules: modules});
     });
 };
 
-exports.logout = function (req, res) {
-    logout(req, res);
+exports.modules = function(req, res) {
+    res.render('modules');
 };
+
+exports.coursework = function(req, res) {
+    res.render('coursework');
+}
 
 var logout = function (req, res) {
     var id = req.session.user.id;
