@@ -22,7 +22,9 @@ exports.login_post = function(req, res) {
             return res.redirect('/login');
         }
         req.session.user.name = name;
-        res.redirect('/');
+        var referer = req.session.referer;
+        req.session.referer = null;
+        res.redirect(referer || '/');
     });
 };
 
