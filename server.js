@@ -32,6 +32,9 @@ app.engine('.hbs', handlebars({
         },
         formatDate: function(datetime) {
             return moment(datetime).format("dddd DD MMMM YYYY - HH:mm");
+        },
+        getMarkPercentage: function(mark) {
+            return Math.round(mark.mark / mark.total * 1000) / 10;
         }
     },
 }));

@@ -6,14 +6,28 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Due</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
              {{#each this.coursework}}
                 <tr>
-                    <td width="80%">{{#if url}}<a href="{{url}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
-                    <td title="{{formatDate due}}">{{dueDate due}}</td>
+                    <td width="70%">{{#if url}}<a href="{{url}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
+                    {{#if mark}}
+                    <td>
+                        <div class="progress">
+                          <div title="{{mark.mark}} out of {{mark.total}}" class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{getMarkPercentage mark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{getMarkPercentage mark}}" style="width: 0%;">
+                            {{getMarkPercentage mark}}%
+                          </div>
+                        </div>
+                    </td>
+                    {{else}}
+                        {{#if submitted}}
+                            <td title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</td>
+                        {{else}}
+                        <td title="{{formatDate due}}">Due {{dueDate due}}</td>
+                        {{/if}}
+                    {{/if}}
                 </tr>
             {{/each}}
             </tbody>

@@ -3,7 +3,7 @@ $(function()
 {
     setTimeout(function()
     {
-        $('.attendance-bar').each(function()
+        $('.animated-bar').each(function()
         {
             this.style.width = $(this).attr('data-width') + '%';
         });
