@@ -12,8 +12,8 @@
             <tbody>
              {{#each this.coursework}}
                 <tr>
-                    <td>{{#if url}}<a href="{{url}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
-                    <td>{{due}}</td>
+                    <td width="80%">{{#if url}}<a href="{{url}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
+                    <td title="{{formatDate due}}">{{dueDate due}}</td>
                 </tr>
             {{/each}}
             </tbody>

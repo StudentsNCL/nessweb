@@ -5,7 +5,8 @@ var http = require('http'),
     bodyParser = require('body-parser'),
     routes = require('./routes'),
     auth = require('./auth'),
-    handlebars = require('express3-handlebars');
+    handlebars = require('express3-handlebars'),
+    moment = require('moment');
 var app = express();
 
 app.use(express.static('public'));
@@ -25,6 +26,13 @@ app.engine('.hbs', handlebars({
                 return options.inverse(this);
             }
         },
+        dueDate: function(datetime) {
+            return moment(datetime).fromNow();
+            //return moment(datetime).format("HH:mm");
+        },
+        formatDate: function(datetime) {
+            return moment(datetime).format("dddd DD MMMM YYYY - HH:mm");
+        }
     },
 }));
 
