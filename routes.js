@@ -59,6 +59,16 @@ exports.coursework.calendar = function(req, res) {
     res.render('coursework/calendar');
 }
 
+exports.coursework.specification = function(req, res) {
+    ness.getSpec(req.params.id, req.session.user, function(err, result) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
+        res.render('coursework/specification', result);
+    });
+}
+
 exports.feedback = {
 
     general: function(req, res) {
@@ -67,7 +77,7 @@ exports.feedback = {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('feedback', { layout: false, feedback: result});
+        res.render('coursework/feedback', { layout: false, feedback: result});
         })
     },
 
@@ -77,7 +87,7 @@ exports.feedback = {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('feedback', { layout: false, feedback: result});
+        res.render('coursework/feedback', { layout: false, feedback: result});
         })
     }
 

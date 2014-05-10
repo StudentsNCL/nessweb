@@ -51,6 +51,7 @@ app.post('/login', routes.login_post);
 app.get('/modules', auth, routes.modules);
 app.get('/coursework', auth, routes.coursework);
 app.get('/coursework/calendar', auth, routes.coursework.calendar);
+app.get('/coursework/specification/:id', auth, routes.coursework.specification);
 app.get('/attendance', auth, routes.attendance);
 app.get('/feedback/general/:id', auth, routes.feedback.general);
 app.get('/feedback/personal/:id', auth, routes.feedback.personal);

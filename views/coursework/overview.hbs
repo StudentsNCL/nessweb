@@ -12,7 +12,7 @@
             <tbody>
              {{#each this.coursework}}
                 <tr>
-                    <td width="78%">{{#if url}}<a href="{{url}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
+                    <td width="78%">{{#if url}}<a href="{{#if spec}}/coursework/specification/{{spec}}{{else}}{{url}}{{/if}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
                     {{#if mark}}
                     <td>
                         <div title="{{mark.mark}} out of {{mark.total}}" class="progress" style="margin-bottom:5px;">
