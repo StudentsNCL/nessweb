@@ -59,6 +59,31 @@ exports.coursework.calendar = function(req, res) {
     res.render('coursework/calendar');
 }
 
+exports.feedback = {
+
+    general: function(req, res) {
+        ness.getModules({ general: req.params.id }, req.session.user, function(err, result) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
+        res.render('feedback', { layout: false, feedback: result});
+        })
+    },
+
+    personal: function(req, res) {
+        ness.getModules({ feedback: req.params.id }, req.session.user, function(err, result) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
+        res.render('feedback', { layout: false, feedback: result});
+        })
+    }
+
+
+}
+
 var logout = function (req, res) {
     var id = req.session.user.id;
     req.session.user = {id: id};

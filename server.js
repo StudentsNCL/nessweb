@@ -52,6 +52,8 @@ app.get('/modules', auth, routes.modules);
 app.get('/coursework', auth, routes.coursework);
 app.get('/coursework/calendar', auth, routes.coursework.calendar);
 app.get('/attendance', auth, routes.attendance);
+app.get('/feedback/general/:id', auth, routes.feedback.general);
+app.get('/feedback/personal/:id', auth, routes.feedback.personal);
 
 // throw a 404 if we get to here
 app.use(function(req, res, next) {
