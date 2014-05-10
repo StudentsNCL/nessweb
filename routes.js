@@ -37,12 +37,12 @@ exports.attendance = function(req, res) {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('attendance', {title: 'Attendance', modules: modules});
+        res.render('attendance', {modules: modules});
     });
 };
 
 exports.modules = function(req, res) {
-    res.render('modules', {title: 'Modules'});
+    res.render('modules');
 };
 
 exports.coursework = function(req, res) {
@@ -51,12 +51,12 @@ exports.coursework = function(req, res) {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('coursework/overview', {title: 'Coursework', coursework: result});
+        res.render('coursework/overview', {coursework: result});
     });
 }
 
 exports.coursework.calendar = function(req, res) {
-    res.render('coursework/calendar', {title: 'Calendar'});
+    res.render('coursework/calendar');
 }
 
 exports.coursework.specification = function(req, res) {
@@ -65,7 +65,7 @@ exports.coursework.specification = function(req, res) {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('coursework/specification', {title: 'Attendance', coursework: result});
+        res.render('coursework/specification', {coursework: result});
     });
 }
 

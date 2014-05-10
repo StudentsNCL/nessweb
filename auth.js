@@ -16,14 +16,24 @@ module.exports = function (req, res, next) {
         path = path.substr(1, path.length);
     }
 
-    var last = path.lastIndexOf('/');
+    var section = path;
+    var last = path.indexOf('/');
     if (last >= 0) {
-       path = path.substr(0, last);
+       section = path.substr(0, last);
     }
+
+    // replace slashes
+    path = path.replace(/\//g, ' &#187; ');
+
+    // uppercase words
+    path = path.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    })
 
     res.locals = {
       user: req.session.user,
-      section: path
+      section: section,
+      title: path || 'NESSweb'
     };
 
     next();
