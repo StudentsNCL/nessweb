@@ -25,9 +25,9 @@
                     </td>
                     {{else}}
                         {{#if submitted}}
-                            <td title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</td>
+                        <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</span></td>
                         {{else}}
-                        <td title="{{formatDate due}}">Due {{dueDate due}}</td>
+                        <td><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
                         {{/if}}
                     {{/if}}
                 </tr>
