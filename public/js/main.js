@@ -1,6 +1,4 @@
-
-$(function()
-{
+$(function() {
     setTimeout(function()
     {
         $('.animated-bar').each(function()
@@ -12,9 +10,7 @@ $(function()
 
     $('*[title]').tooltip();
 
-
-});
-
-$('body').on('hidden.bs.modal', '.modal', function () {
-    $(this).removeData('bs.modal');
+    $('body').on('hidden.bs.modal', '.modal', function () {
+        $(this).removeData('bs.modal');
+    });
 });
