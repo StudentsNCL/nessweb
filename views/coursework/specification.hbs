@@ -1,7 +1,7 @@
-<h1>{{module.name}} - {{module.name}}</h1>
-<h2>{{title}}</h2>
-<h3>{{due}} - {{mark}}</h3>
+<h1>{{coursework.module.name}} - {{coursework.module.name}}</h1>
+<h2>{{coursework.title}}</h2>
+<h3>{{coursework.due}} - {{coursework.mark}}</h3>
 <div>
-	{{{spec}}}
-	<p style="float:right;">Last updated <strong>{{formatDate updated}}</strong></p>
+	{{{coursework.spec}}}
+	<p style="float:right;">Last updated <strong>{{formatDate coursework.updated}}</strong></p>
 </div>
