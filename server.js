@@ -43,7 +43,7 @@ app.set('view engine', '.hbs');
 app.set('views', 'views/');
 
 app.get('/', function(req, res){
-    res.redirect('/attendance');
+    res.redirect('/coursework');
 });
 app.get('/login', routes.login_get);
 app.get('/logout', routes.logout);
