@@ -15,8 +15,8 @@
                     <td width="78%">{{#if url}}<a href="{{url}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
                     {{#if mark}}
                     <td>
-                        <div class="progress" style="margin-bottom:5px;">
-                          <div title="{{mark.mark}} out of {{mark.total}}" class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{getMarkPercentage mark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{getMarkPercentage mark}}" style="width: 0%;">
+                        <div title="{{mark.mark}} out of {{mark.total}}" class="progress" style="margin-bottom:5px;">
+                          <div class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{getMarkPercentage mark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{getMarkPercentage mark}}" style="width: 0%;">
                             {{getMarkPercentage mark}}%
                           </div>
                         </div>
