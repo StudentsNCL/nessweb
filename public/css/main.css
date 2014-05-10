@@ -8,6 +8,8 @@
 }
 
 /* Hover over coursework menu to see options */
-#menuCoursework:hover > ul.dropdown-menu {
-    display: block;    
+@media (min-width:768px){
+    #menuCoursework:hover > ul.dropdown-menu {
+        display: block;
+    }
 }
