@@ -8,6 +8,6 @@
 }
 
 /* Hover over coursework menu to see options */
-html.no-touch #menuCoursework:hover > ul.dropdown-menu {
+html.no-touch li.dropdown:hover > ul.dropdown-menu {
   display: block;
 }
