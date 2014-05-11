@@ -47,7 +47,17 @@ exports.modules = function(req, res) {
             req.session.failed_login = true;
             return logout(req, res);
         }
-        res.render('modules', {stages: stages});
+        res.render('modules/modules', {stages: stages});
+    });
+};
+
+exports.modules.module = function(req, res) {
+     ness.getStages({id: req.params.id, year: req.params.year, stage: req.params.stage}, req.session.user, function(err, module) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
+        res.render('modules/module', {module: module});
     });
 };
 
