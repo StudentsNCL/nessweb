@@ -25,11 +25,22 @@
                     </td>
                     {{else}}
                         {{#if submitted}}
-                        <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</span></td>
+                    <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</span></td>
                         {{else}}
-                        <td><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
-                        {{/if}}
-                    {{/if}}
+                            {{#dateAfter due}}
+                                {{#if late}}
+                    <td style="color:red"><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
+                                {{else}} {{#if extension}}
+                    <td style="color:green"><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
+                                    {{else}}
+                    <td><span title="{{formatDate due}}">Completed {{dueDate due}}</span></td>
+                                    {{/if}}{{!/extension}}
+                                {{/if}}{{!/late}}
+                            {{else}}
+                    <td><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
+                            {{/dateAfter}}{{!/dateAfter due}}
+                        {{/if}}{{!/submitted}}
+                    {{/if}}{{!/mark}}
                 </tr>
             {{/each}}
             </tbody>
