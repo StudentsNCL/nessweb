@@ -42,7 +42,13 @@ exports.attendance = function(req, res) {
 };
 
 exports.modules = function(req, res) {
-    res.render('modules');
+     ness.getStages({}, req.session.user, function(err, stages) {
+        if (err) {
+            req.session.failed_login = true;
+            return logout(req, res);
+        }
+        res.render('modules', {stages: stages});
+    });
 };
 
 exports.coursework = function(req, res) {

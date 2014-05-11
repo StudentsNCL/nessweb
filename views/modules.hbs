@@ -1,1 +1,43 @@
-module list
+<div class="row">
+    {{#each stages}}
+    <div class="col-md-12">
+        <h1>Stage {{stage}}</h1>
+        <table class="table table-condensed table-striped">
+            <thead>
+                <tr>
+                    <th>Module</th>
+                    <th>Credits</th>
+                    <th>Attempt</th>
+                    <th>Attempt Mark</th>
+                    <th>Final Mark</th>
+                    <th>Decision</th>
+                    <th>Attendance</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+             {{#each modules}}
+                <tr>
+                    <td>{{code}}</td>
+                    <td>{{credits}}</td>
+					<td>{{attempt}}</td>
+					<td>{{attemptMark}}</td>
+					<td>{{finalMark}}</td>
+					<td>{{decision}}</td>
+					<td>{{attendance.attendance}}</td>
+					<td><a href="#">View Details</a></td>            
+                </tr>
+            {{/each}}
+            </tbody>
+        </table>
+
+        <div id="feedback-modal" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+            </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+    </div>
+    {{/each}}
+</div>
