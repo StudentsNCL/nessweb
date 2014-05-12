@@ -1,18 +1,18 @@
 
 <div class="modal-header">
-	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-	<h4 class="modal-title">{{feedback.title}}</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{feedback.title}}</h4>
 </div>
 <div class="modal-body">
-	{{#if feedback.individual}}
-	<h1>Individual Feedback</h1>
-	{{{feedback.individual}}}
-	{{/if}}
-	{{#if feedback.general}}
-	<h1>General Feedback</h1>
-	{{{feedback.general}}}
-	{{/if}}
+    {{#if feedback.individual}}
+    <h1>Individual Feedback</h1>
+    {{{feedback.individual}}}
+    {{/if}}
+    {{#if feedback.general}}
+    <h1>General Feedback</h1>
+    {{{feedback.general}}}
+    {{/if}}
 </div>
 <div class="modal-footer">
-	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 </div>
