@@ -85,29 +85,44 @@ exports.coursework.specification = function(req, res) {
     });
 }
 
-exports.feedback = {
-
-    general: function(req, res) {
-        ness.getModules({ general: req.params.id }, req.session.user, function(err, result) {
-        if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
-        }
-        res.render('coursework/feedback', { layout: false, feedback: result});
-        })
-    },
-
-    personal: function(req, res) {
-        ness.getModules({ feedback: req.params.id }, req.session.user, function(err, result) {
-        if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
-        }
-        res.render('coursework/feedback', { layout: false, feedback: result});
-        })
+exports.feedback = function(req, res) {
+    ness.getFeedback({ exid: req.params.id }, req.session.user, function(err, result) {
+    if (err) {
+        req.session.failed_login = true;
+        return logout(req, res);
     }
+    res.render('modules/feedback', { layout: false, feedback: result});
+    });
+}
 
+exports.feedback.exam = function(req, res) {
+    ness.getFeedback({ paperId: req.params.id, stid: req.params.stid }, req.session.user, function(err, result) {
+    if (err) {
+        req.session.failed_login = true;
+        return logout(req, res);
+    }
+    res.render('modules/feedback', { layout: false, feedback: result});
+    });
+}
 
+exports.feedback.general = function(req, res) {
+    ness.getFeedback({ general: req.params.id }, req.session.user, function(err, result) {
+    if (err) {
+        req.session.failed_login = true;
+        return logout(req, res);
+    }
+    res.render('coursework/feedback', { layout: false, feedback: result});
+    })
+}
+
+exports.feedback.personal = function(req, res) {
+    ness.getFeedback({ personal: req.params.id }, req.session.user, function(err, result) {
+    if (err) {
+        req.session.failed_login = true;
+        return logout(req, res);
+    }
+    res.render('coursework/feedback', { layout: false, feedback: result});
+    })
 }
 
 var logout = function (req, res) {

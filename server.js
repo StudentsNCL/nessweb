@@ -55,11 +55,13 @@ app.get('/login', routes.login_get);
 app.get('/logout', routes.logout);
 app.post('/login', routes.login_post);
 app.get('/modules', auth, routes.modules);
-app.get('/modules/:year/:stage/:id', auth, routes.modules.module);
 app.get('/coursework', auth, routes.coursework);
 app.get('/coursework/calendar', auth, routes.coursework.calendar);
 app.get('/coursework/specification/:id', auth, routes.coursework.specification);
 app.get('/attendance', auth, routes.attendance);
+app.get('/modules/feedback/:id', auth, routes.feedback);
+app.get('/modules/feedback/:id/:stid', auth, routes.feedback.exam);
+app.get('/modules/:year/:stage/:id', auth, routes.modules.module);
 app.get('/feedback/general/:id', auth, routes.feedback.general);
 app.get('/feedback/personal/:id', auth, routes.feedback.personal);
 

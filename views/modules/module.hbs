@@ -21,7 +21,7 @@
         <tr>
             <td>{{name}} - {{percentage}}% of module</td>
             <td>{{#if mark}}{{mark}}{{else}}TBR{{/if}}</td>
-			<td>{{#if feedback}}<a href="/modules/feedback/{{feedback.stid}}/{{feedback.paperId}}">View Feedback</a>{{/if}}</td>            
+			<td>{{#if feedback}}<a href="/modules/feedback/{{feedback.paperId}}/{{feedback.stid}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button" role="button">View Feedback</a>{{/if}}</td>
         </tr>
     {{/each}}
     {{#if module.coursework}}
@@ -31,15 +31,22 @@
     {{/if}}
     {{#each module.coursework}}
         <tr>
-            <td colspan="3" style="background-color:#c8c4bf"><strong>{{name}} - {{percentage}}% of module</strong></td>           
+            <td colspan="3" style="background-color:#c8c4bf"><strong>{{name}} - {{percentage}}% of module</strong></td>
         </tr>
     {{#each coursework}}
         <tr>
             <td>{{name}} - {{percentage}}% of module</td>
             <td>{{#if mark}}{{mark.percent}} - ({{mark.mark}}/{{mark.total}}){{else}}TBR{{/if}}</td>
-            <td>{{#if feedback}}<a href="/modules/feedback/{{feedback}}">View Feedback</a>{{/if}}</td>            
+            <td>{{#if feedback}}<a href="/modules/feedback/{{feedback}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button" role="button">View Feedback</a>{{/if}}</td>
         </tr>
     {{/each}}
     {{/each}}
     </tbody>
 </table>
+
+<div id="feedback-modal" class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
