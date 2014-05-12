@@ -6,8 +6,3 @@
 .container-main {
   margin-top: 100px;
 }
-
-/* Hover over coursework menu to see options */
-html.no-touch li.dropdown:hover > ul.dropdown-menu {
-  display: block;
-}
