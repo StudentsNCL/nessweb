@@ -11,7 +11,7 @@ var app = express();
 
 app.use(express.static('public'));
 app.use(cookieParser())
-app.use(session({secret: 'winter is coming' }));
+app.use(session({secret: 'winter is coming', key: 'nessweb_sid', cookie: {maxAge: 30 * 60 * 1000} }));
 app.use(bodyParser());
 
 app.engine('.hbs', handlebars({

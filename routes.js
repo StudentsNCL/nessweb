@@ -8,7 +8,11 @@ exports.login_get = function(req, res) {
     }
     var failed_login = req.session.failed_login;
     req.session.failed_login = false;
-    res.render('login', {layout: 'login', failed: failed_login, user: req.session.user});
+    var failed_id = req.session.failed_id;
+    req.session.failed_id = '';
+    var id = failed_login ? failed_id : req.cookies.ness_id;
+
+    res.render('login', {layout: 'login', failed: failed_login, ness_id: id});
 };
 
 exports.login_post = function(req, res) {
