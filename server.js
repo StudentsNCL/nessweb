@@ -41,7 +41,15 @@ app.engine('.hbs', handlebars({
         },
         getMarkPercentage: function(mark) {
             return Math.round(mark.mark / mark.total * 1000) / 10;
-        }
+        },
+        gte: function(num, comp, options) {
+            if (typeof(num) === 'number' && num >= comp) {
+                return options.fn(this);
+            }
+            else {
+                return options.inverse(this);
+            }
+        },
     },
 }));
 

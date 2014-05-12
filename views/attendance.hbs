@@ -11,14 +11,14 @@
             <tr>
                 <td>{{code}}</td>
                 <td>{{title}}</td>
-                <td>{{#if attendance}}
+                <td>{{#gte attendance 0}}
                     <div class="progress">
                       <div class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{attendance}}" aria-valuemin="0" aria-valuemax="100" data-width="{{attendance}}" style="width: 0%;">
                         {{attendance}}%
                       </div>
                     </div>
-                    {{else}}-{{/if}}</td>
-                <td>{{#if attended}}{{attended}}/{{total}}{{else}}-{{/if}}</td>
+                    {{else}}-{{/gte}}</td>
+                <td>{{#gte attended 0}}{{attended}}/{{total}}{{else}}-{{/gte}}</td>
             </tr>
             {{/each}}
         </table>
