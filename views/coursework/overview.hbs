@@ -25,8 +25,12 @@
                     </td>
                     {{else}}
                         {{#if submitted}}
-                    <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</span></td>
+                        {{#if late}}
+                    <td><span style="color:red" title="{{formatDate submitted}} - This coursework was submitted late!">Submitted {{dueDate submitted}}</span></td>
                         {{else}}
+                    <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</span></td>
+                        {{/if}}{{!/late}}
+                        {{else}}{{!not submitted}}
                             {{#dateAfter due}}
                                 {{#if late}}
                     <td style="color:red"><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
