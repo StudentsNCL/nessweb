@@ -1,20 +1,45 @@
-
-<h1>Module Overview</h1>
+<ol class="breadcrumb">
+    <li><a href="/modules">Modules</a></li>
+    <li class="active">{{module.code}}</li>
+</ol>
+<h1>{{module.code}} Module Overview</h1>
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
             <th>Name</th>
             <th>Mark</th>
-            <th>Type</th>
+            <th>Feedback</th>
         </tr>
     </thead>
     <tbody>
-     {{#each module}}
+    {{#if module.exams}}
         <tr>
-            <td>{{name}}</td>
-            <td>{{#if mark}}{{mark}}{{else}}TBR{{/if}}</td>
-			<td>{{type}}</td>            
+            <td colspan="3" style="text-align:center;background-color:#dd4814;font-weight:bold;color:#ffffff;">Exams</td>
         </tr>
+    {{/if}}
+    {{#each module.exams}}
+        <tr>
+            <td>{{name}} - {{percentage}}% of module</td>
+            <td>{{#if mark}}{{mark}}{{else}}TBR{{/if}}</td>
+			<td>{{#if feedback}}<a href="/modules/feedback/{{feedback.stid}}/{{feedback.paperId}}">View Feedback</a>{{/if}}</td>            
+        </tr>
+    {{/each}}
+    {{#if module.coursework}}
+        <tr>
+            <td colspan="3" style="text-align:center;background-color:#dd4814;font-weight:bold;color:#ffffff;">Coursework</td>
+        </tr>
+    {{/if}}
+    {{#each module.coursework}}
+        <tr>
+            <td colspan="3" style="background-color:#c8c4bf"><strong>{{name}} - {{percentage}}% of module</strong></td>           
+        </tr>
+    {{#each coursework}}
+        <tr>
+            <td>{{name}} - {{percentage}}% of module</td>
+            <td>{{#if mark}}{{mark.percent}} - ({{mark.mark}}/{{mark.total}}){{else}}TBR{{/if}}</td>
+            <td>{{#if feedback}}<a href="/modules/feedback/{{feedback}}">View Feedback</a>{{/if}}</td>            
+        </tr>
+    {{/each}}
     {{/each}}
     </tbody>
 </table>
