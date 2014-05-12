@@ -28,14 +28,13 @@ exports.login_post = function(req, res) {
 };
 
 exports.logout = function (req, res) {
-    logout(req, res);
+    logout(false, req, res);
 };
 
 exports.attendance = function(req, res) {
     ness.getModules('attendance', req.session.user, function(err, modules) {
         if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
+            return logout(true, req, res);
         }
         res.render('attendance', {modules: modules});
     });
@@ -44,8 +43,7 @@ exports.attendance = function(req, res) {
 exports.modules = function(req, res) {
      ness.getStages({}, req.session.user, function(err, stages) {
         if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
+            return logout(true, req, res);
         }
         res.render('modules/modules', {stages: stages});
     });
@@ -54,8 +52,7 @@ exports.modules = function(req, res) {
 exports.modules.module = function(req, res) {
      ness.getStages({id: req.params.id, year: req.params.year, stage: req.params.stage}, req.session.user, function(err, module) {
         if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
+            return logout(true, req, res);
         }
         res.render('modules/module', {module: module});
     });
@@ -64,8 +61,7 @@ exports.modules.module = function(req, res) {
 exports.coursework = function(req, res) {
     ness.getModules('coursework', req.session.user, function(err, result) {
         if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
+            return logout(true, req, res);
         }
         res.render('coursework/overview', {coursework: result});
     });
@@ -78,8 +74,7 @@ exports.coursework.calendar = function(req, res) {
 exports.coursework.specification = function(req, res) {
     ness.getSpec(req.params.id, req.session.user, function(err, result) {
         if (err) {
-            req.session.failed_login = true;
-            return logout(req, res);
+            return logout(true, req, res);
         }
         res.render('coursework/specification', {coursework: result});
     });
@@ -88,8 +83,7 @@ exports.coursework.specification = function(req, res) {
 exports.feedback = function(req, res) {
     ness.getFeedback({ exid: req.params.id }, req.session.user, function(err, result) {
     if (err) {
-        req.session.failed_login = true;
-        return logout(req, res);
+        return logout(true, req, res);
     }
     res.render('modules/feedback', { layout: false, feedback: result});
     });
@@ -98,8 +92,7 @@ exports.feedback = function(req, res) {
 exports.feedback.exam = function(req, res) {
     ness.getFeedback({ paperId: req.params.id, stid: req.params.stid }, req.session.user, function(err, result) {
     if (err) {
-        req.session.failed_login = true;
-        return logout(req, res);
+        return logout(true, req, res);
     }
     res.render('modules/feedback', { layout: false, feedback: result});
     });
@@ -108,8 +101,7 @@ exports.feedback.exam = function(req, res) {
 exports.feedback.general = function(req, res) {
     ness.getFeedback({ general: req.params.id }, req.session.user, function(err, result) {
     if (err) {
-        req.session.failed_login = true;
-        return logout(req, res);
+        return logout(true, eq, res);
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
     })
@@ -118,14 +110,14 @@ exports.feedback.general = function(req, res) {
 exports.feedback.personal = function(req, res) {
     ness.getFeedback({ personal: req.params.id }, req.session.user, function(err, result) {
     if (err) {
-        req.session.failed_login = true;
-        return logout(req, res);
+        return logout(true, req, res);
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
     })
 }
 
-var logout = function (req, res) {
+var logout = function (forced, req, res) {
+    req.session.failed_login = forced;
     var id = req.session.user.id;
     req.session.user = {id: id};
     res.redirect('/login');
