@@ -48,6 +48,40 @@ app.engine('.hbs', handlebars({
 app.set('view engine', '.hbs');
 app.set('views', 'views/');
 
+// Before routing, do some global stuff like title setting
+app.use(function (req, res, next) {
+    var path = req.path.toLowerCase().trim();
+    // remove trailing slashes
+    while(path.substr(-1) == '/') {
+        path = path.substr(0, path.length - 1);
+    }
+    // remove leading slashes
+    while(path.charAt(0) == '/') {
+        path = path.substr(1, path.length);
+    }
+
+    var section = path;
+    var last = path.indexOf('/');
+    if (last >= 0) {
+       section = path.substr(0, last);
+    }
+
+    // replace slashes
+    path = path.replace(/\//g, ' &#187; ');
+
+    // uppercase words
+    path = path.replace(/\w\S*/g, function(txt){
+      return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    })
+
+    res.locals = {
+      section: section,
+      title: path || 'NESSweb'
+    };
+
+    next();
+});
+
 app.get('/', function(req, res){
     res.redirect('/coursework');
 });
