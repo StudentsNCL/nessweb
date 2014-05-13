@@ -10,17 +10,9 @@ Usage
 -------------------
 To setup and run:
 
-    make
+    node server
 
 Open [localhost:8080](http://localhost:8080) in a web browser.
-
-Development
------------
-
-When developing, watch for changes in static files (in a different terminal session to the sever):
-
-    make watch
-_Note: When changing version number, you will have to restart the server for the correct static files to be outputted_
 
 Screenshots
 -----------
