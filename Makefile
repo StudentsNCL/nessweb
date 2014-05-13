@@ -1,13 +1,5 @@
-all: static server
-
-static:
-	gulp
-
-server:
+all:
 	node server
 
-watch:
-	gulp && gulp watch
 
-
-.PHONY: all static server watch
+.PHONY: all
