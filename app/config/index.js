@@ -4,6 +4,8 @@ var express = require('express'),
     bodyParser = require('body-parser');
 var app = express();
 
+app.locals = require('./locals');
+
 app.use(express.static('app/public'));
 app.use(cookieParser())
 app.use(session({secret: 'winter is coming', key: 'nessweb_sid',
