@@ -18,15 +18,12 @@ module.exports.login = function (req, res, onError) {
         id: req.body.id,
         pass: req.body.pass
     };
+    var remember = !!req.body.remember;
 
     req.session.user = user;
 
-    if (req.body.remember) {
-        res.cookie('ness_id', user.id, { httpOnly: true });
-    }
-    else {
-        res.clearCookie('ness_id');
-    }
+    // Remember this user's id. Who cares about cookie policy
+    res.cookie('ness_id', user.id, { httpOnly: true, maxAge: 365 * 24 * 60 * 60 * 1000 });
 
     ness.getName(user, function(err, name) {
         if (err) {
@@ -37,6 +34,14 @@ module.exports.login = function (req, res, onError) {
         req.session.user.name = name;
         var referer = req.session.referer;
         req.session.referer = null;
+        if (remember) {
+            // User will be kept logged in for 28 days
+            req.session.cookie.maxAge = 28 * 24 * 60 * 60 * 1000;
+        }
+        else {
+            // User will have to log on when browser restarts
+            req.session.cookie.expires = false;
+        }
         res.redirect(referer || '/');
     });
 }

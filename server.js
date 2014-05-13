@@ -10,7 +10,10 @@ var app = express();
 
 app.use(express.static('public'));
 app.use(cookieParser())
-app.use(session({secret: 'winter is coming', key: 'nessweb_sid', cookie: {maxAge: 30 * 60 * 1000} }));
+app.use(session({secret: 'winter is coming', key: 'nessweb_sid',
+    // by default, the session will expire after 20 minutes
+    cookie: {maxAge: 20 * 60 * 1000} })
+);
 app.use(bodyParser());
 
 app.engine('.hbs', handlebars({
