@@ -15,19 +15,19 @@
                     <td width="78%">{{#if url}}<a href="{{#if spec}}/coursework/specification/{{spec}}{{else}}{{url}}{{/if}}">{{title}}</a>{{else}}{{title}}{{/if}}</td>
                     {{#if mark}}
                     <td>
-                        <div title="{{mark.mark}} out of {{mark.total}}{{#if late}} - This work was submitted late so is capped at 40%{{/if}}" class="progress" style="margin-bottom:5px;">
-                        {{#if late}}
+                        <div title="{{mark.mark}} out of {{mark.total}}{{#if late}} - This work was submitted late{{#ifCond (markPass mark) '==' true}} so is capped at 40%{{/ifCond}}{{/if}}" class="progress" style="margin-bottom:5px;">
+                        {{#ifCond (markPass mark) '&&' late}}
                           <div class="progress-bar animated-bar" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" data-width="40" style="width: 0%;">
                           40%
                           </div>
-                          <div class="progress-bar progress-bar-success animated-bar" role="progressbar" aria-valuenow="{{math (getMarkPercentage mark) '-' '40'}}" aria-valuemin="0" aria-valuemax="100" data-width="{{math (getMarkPercentage mark) '-' '40'}}" style="width: 0%;">
+                          <div class="progress-bar progress-bar-warning animated-bar" role="progressbar" aria-valuenow="{{math (getMarkPercentage mark) '-' '40'}}" aria-valuemin="0" aria-valuemax="100" data-width="{{math (getMarkPercentage mark) '-' '40'}}" style="width: 0%;">
                             {{math (getMarkPercentage mark) '-' '40'}}%
                           </div>
                         {{else}}
-                          <div class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{getMarkPercentage mark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{getMarkPercentage mark}}" style="width: 0%;">
+                          <div class="progress-bar animated-bar {{#ifCond (markPass mark) '==' false}} progress-bar-warning{{/ifCond}}" role="progressbar" aria-valuenow="{{getMarkPercentage mark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{getMarkPercentage mark}}" style="width: 0%;">
                             {{getMarkPercentage mark}}%
                           </div>
-                        {{/if}}{{!late and mark <=40}}
+                        {{/ifCond}}{{!late and mark > 40}}
                         </div>
                         <a href="{{#if general}}feedback/general/{{general}}{{/if}}" data-toggle="modal" data-target="#feedback-modal" class="btn btn-default btn-xs feedback-button {{#unless general}}disabled{{/unless}}" role="button">General Feedback</a>
                         <a href="{{#if feedback}}feedback/personal/{{feedback}}{{/if}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button {{#unless feedback}}disabled{{/unless}}" role="button">Personal Feedback</a>
