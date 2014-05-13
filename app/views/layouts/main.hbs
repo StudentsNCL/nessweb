@@ -29,6 +29,7 @@
 
         <link rel="stylesheet" href="/css/vendor/bootstrap.min.css">
         <link rel="stylesheet" href="/css/main.css">
+        <link rel="stylesheet" href="css/vendor/calendar.css">
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -78,6 +79,11 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
         <script src="/js/vendor/bootstrap.min.js"></script>
+        {{#eq section 'calendar'}}
+            <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
+            <script type="text/javascript" src="js/vendor/calendar.min.js"></script>
+            <script type="text/javascript" src="js/calendar.js"></script>
+        {{/eq}}
         <script src="/js/main.js"></script>
 
     </body>

@@ -11,8 +11,9 @@ module.exports = function (app) {
     app.post('/login', ctrl.login_post);
 
     app.get('/coursework', auth, ctrl.coursework);
-    app.get('/coursework/calendar', auth, ctrl.coursework.calendar);
     app.get('/coursework/specification/:id', auth, ctrl.coursework.specification);
+
+    app.get('/calendar', auth, ctrl.calendar);
 
     app.get('/attendance', auth, ctrl.attendance);
 

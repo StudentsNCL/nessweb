@@ -62,8 +62,13 @@ exports.coursework = function(req, res) {
     });
 }
 
-exports.coursework.calendar = function(req, res) {
-    res.render('coursework/calendar');
+exports.calendar = function(req, res) {
+    ness.getModules('coursework', req.session.user, function(err, result) {
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('calendar', {coursework: result});
+    });
 }
 
 exports.coursework.specification = function(req, res) {
