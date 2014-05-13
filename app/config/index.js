@@ -2,13 +2,13 @@ var express = require('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     bodyParser = require('body-parser'),
-    routes = require('./routes'),
-    auth = require('./auth'),
+    routes = require('../controllers'),
+    auth = require('../controllers/auth'),
     handlebars = require('express3-handlebars'),
     moment = require('moment');
 var app = express();
 
-app.use(express.static('public'));
+app.use(express.static('app/public'));
 app.use(cookieParser())
 app.use(session({secret: 'winter is coming', key: 'nessweb_sid',
     // by default, the session will expire after 20 minutes
@@ -18,7 +18,7 @@ app.use(bodyParser());
 
 app.engine('.hbs', handlebars({
     defaultLayout: 'main',
-    layoutsDir: 'views/layouts/',
+    layoutsDir: 'app/views/layouts/',
     extname: '.hbs',
     helpers: {
         eq: function (obj1, obj2, options) {
@@ -97,7 +97,7 @@ app.engine('.hbs', handlebars({
 }));
 
 app.set('view engine', '.hbs');
-app.set('views', 'views/');
+app.set('views', 'app/views/');
 
 // Before routing, do some global stuff like title setting
 app.use(function (req, res, next) {
@@ -164,4 +164,4 @@ app.use(function(req, res, next) {
     return;
 });
 
-app.listen(8080);
+module.exports = app;
