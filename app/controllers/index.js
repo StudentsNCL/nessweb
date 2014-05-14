@@ -1,6 +1,7 @@
 var ness = require('nessjs'),
     session = require('express-session'),
-    auth = require('./auth');
+    auth = require('./auth'),
+    moment = require('moment');
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -114,4 +115,32 @@ exports.feedback.personal = function(req, res) {
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
     })
+}
+
+exports.json = {
+    calendar: function(req, res) {
+        ness.getModules('coursework', req.session.user, function(err, result) {
+            if (err) {
+                return auth.logout(true, req, res);
+            }
+            var json = {
+                success: 1,
+                result: []
+            }
+            // loop through each course
+            for(var i = 0; i < result.length; i++) {
+                for(var j = 0; j < result[i].coursework.length; j++) {
+                    json.result.push({
+                        id: parseInt(''+i+j),
+                        title: result[i].coursework[j].title,
+                        url: 'http://example.com',
+                        class: "event-important",
+                        start: parseInt(moment(result[i].coursework[j].due).format('X')+'000'),
+                        end: parseInt(moment(result[i].coursework[j].due).format('X')+'000')
+                    })
+                }
+            }
+            res.send(json);
+        });
+    }
 }

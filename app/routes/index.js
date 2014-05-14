@@ -24,4 +24,6 @@ module.exports = function (app) {
 
     app.get('/feedback/general/:id', auth, ctrl.feedback.general);
     app.get('/feedback/personal/:id', auth, ctrl.feedback.personal);
+
+    app.get('/json/calendar', auth, ctrl.json.calendar);
 }
