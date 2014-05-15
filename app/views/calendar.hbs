@@ -1,15 +1,16 @@
 <div class="col-md-9">
     <div id="calendar"></div>
 </div>
-<div class="col-md-3">
+<div id="events-list" class="col-md-3">
     <h3>Upcoming Coursework</h3>
+    <hr />
     {{#if coursework.empty}}
     <p>You have no upcoming coursework</p>
     {{else}}
     {{#each coursework.result}}
     <div>
         <p>
-            <strong>{{title}}</strong>
+            <strong>{{title}}</strong><br />
             <span class="small">{{formatDate due}}</span>
         </p>
     </div>

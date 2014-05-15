@@ -195,12 +195,6 @@
 #cal-slide-tick.tick-day7 {
   left: 92.85714285714285%;
 }
-.events-list {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  overflow: hidden;
-}
 #cal-slide-content ul.unstyled {
   margin-bottom: 0;
 }
@@ -500,10 +494,6 @@ span[data-cal-date]:hover {
   font-weight: normal;
   line-height: 22px;
 }
-.events-list {
-  max-height: 47px;
-  padding-left: 5px;
-}
 .cal-column {
   border-left: 1px solid #e1e1e1;
 }
@@ -513,4 +503,12 @@ a.cal-event-week {
 }
 .badge-important {
   background-color: #b94a48;
+}
+
+/********CUSTOM STYLES*********/
+
+#events-list {
+  box-shadow: 3px 3px 15px #888888;
+  padding: 0 10px 10px 10px;
+  border-radius: 15px;
 }
