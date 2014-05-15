@@ -2,5 +2,17 @@
     <div id="calendar"></div>
 </div>
 <div class="col-md-3">
-    <h3>Upcoming Coursework<h3>
+    <h3>Upcoming Coursework</h3>
+    {{#if coursework.empty}}
+    <p>You have no upcoming coursework</p>
+    {{else}}
+    {{#each coursework.result}}
+    <div>
+        <p>
+            <strong>{{title}}</strong>
+            <span class="small">{{formatDate due}}</span>
+        </p>
+    </div>
+    {{/each}}
+    {{/if}}
 </div>

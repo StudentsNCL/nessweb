@@ -68,7 +68,22 @@ exports.calendar = function(req, res) {
         if (err) {
             return auth.logout(true, req, res);
         }
-        res.render('calendar', {coursework: result});
+        var json = {
+            result: []
+        };
+        // loop through each course
+        for(var i = 0; i < result.length; i++) {
+            for(var j = 0; j < result[i].coursework.length; j++) {
+                if(moment().diff(result[i].coursework[j].due) < 0)
+                    json.result.push({
+                        title: result[i].coursework[j].title,
+                        start: moment(result[i].coursework[j].due)
+                    })
+            }
+        }
+        if(json.result.length == 0)
+            json.empty = 1;
+        res.render('calendar', {coursework: json});
     });
 }
 
