@@ -77,7 +77,7 @@ exports.calendar = function(req, res) {
                 if(moment().diff(result[i].coursework[j].due) < 0)
                     json.result.push({
                         title: result[i].coursework[j].title,
-                        start: moment(result[i].coursework[j].due)
+                        due: result[i].coursework[j].due
                     })
             }
         }
