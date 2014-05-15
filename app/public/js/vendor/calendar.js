@@ -837,6 +837,10 @@ if(!String.prototype.formatNum) {
 	Calendar.prototype._loadEvents = function() {
 		var self = this;
 		var source = null;
+		//checking if we have already cached events
+		if(window.ness && window.ness.events) {
+			return;
+		}
 		if('events_source' in this.options && this.options.events_source !== '') {
 			source = this.options.events_source;
 		}
@@ -874,6 +878,10 @@ if(!String.prototype.formatNum) {
 								$.error(json.error);
 							}
 							if(json.result) {
+								//setting window.ness.events true so we dont have to reload data
+								window.ness = {
+									events: true
+								};
 								events = json.result;
 							}
 						});
