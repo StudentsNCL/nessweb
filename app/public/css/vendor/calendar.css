@@ -152,6 +152,7 @@
 }
 #cal-slide-box {
   position: relative;
+  background-color: #bf3e11;
 }
 #cal-slide-tick {
   position: absolute;
