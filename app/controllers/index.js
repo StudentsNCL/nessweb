@@ -81,6 +81,11 @@ exports.calendar = function(req, res) {
                     })
             }
         }
+        json.result.sort(function(a, b) {
+            return a.due < b.due ? -1 : 1;
+        });
+        // keep only first 5 bits of coursework
+        json.result = json.result.slice(0, 5);
         if(json.result.length == 0)
             json.empty = 1;
         res.render('calendar', {coursework: json});
