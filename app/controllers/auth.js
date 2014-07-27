@@ -1,7 +1,7 @@
 var ness = require('nessjs');
 
 module.exports = function (req, res, next) {
-    if (!req.session.user || !req.session.user.name) {
+    if (!req.session.user || !req.session.user.name || !req.session.user.cookie) {
         res.redirect('/login');
         req.session.referer = req.originalUrl;
         return;
@@ -25,13 +25,14 @@ module.exports.login = function (req, res, onError) {
     // Remember this user's id. Who cares about cookie policy
     res.cookie('ness_id', user.id, { httpOnly: true, maxAge: 365 * 24 * 60 * 60 * 1000 });
 
-    ness.getName(user, function(err, name) {
+    ness.login(user, function(err, response) {
         if (err) {
             req.session.failed_login = true;
             req.session.failed_id = user.id;
             return res.redirect('/login');
         }
-        req.session.user.name = name;
+        req.session.user.name = response.name;
+        req.session.user.cookie = response.cookie;
         var referer = req.session.referer;
         req.session.referer = null;
         if (remember) {
