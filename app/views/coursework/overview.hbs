@@ -2,6 +2,7 @@
     {{#each coursework}}
     <div class="col-md-12">
         <h1>{{code}}: {{title}}</h1>
+        {{#if this.coursework}}
         <table class="table table-condensed table-striped">
             <thead>
                 <tr>
@@ -58,6 +59,9 @@
             {{/each}}
             </tbody>
         </table>
+        {{else}}{{!/no coursework for module}}
+        <p>There is no coursework on Ness for this module</p>
+        {{/if}}
 
         <div id="feedback-modal" class="modal fade">
           <div class="modal-dialog">

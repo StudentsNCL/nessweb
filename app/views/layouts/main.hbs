@@ -29,7 +29,9 @@
 
         <link rel="stylesheet" href="/css/vendor/bootstrap.min.css">
         <link rel="stylesheet" href="/css/main.css">
-        <link rel="stylesheet" href="css/vendor/calendar.css">
+        {{#eq section 'calendar'}}
+        <link rel="stylesheet" href="/css/vendor/calendar.css">
+        {{/eq}}
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>

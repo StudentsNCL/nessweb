@@ -17,7 +17,14 @@ exports.login_get = function(req, res) {
 };
 
 exports.login_post = function(req, res) {
-    auth.login(req, res);
+    var referer = req.session.referer;
+    req.session.referer = null;
+    auth.login(req, res, function(err){
+        if(err)
+            res.redirect('/login');
+        else
+            res.redirect(referer || '/');
+    });
 };
 
 exports.logout = function (req, res) {

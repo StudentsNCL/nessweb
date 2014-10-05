@@ -6,17 +6,29 @@ module.exports = function (req, res, next) {
         req.session.referer = req.originalUrl;
         return;
     }
+    // If the Shibboleth cookie has expired then relogin before going to page
+    if(req.session.user.cookieAge < new Date().getTime() - 30 * 60 * 1000){
+        module.exports.login(req, res, function(err){
+            if(err)
+                res.redirect('/logout');
+            else
+                next();
+        });
+    }
+    else{
+        req.session.touch();
+        //refreshing cookie
+        req.session.user.cookieAge = new Date().getTime();
+        res.locals.user = req.session.user;
 
-    req.session.touch();
-    res.locals.user = req.session.user;
-
-    next();
+        next();
+    }
 }
 
-module.exports.login = function (req, res, onError) {
+module.exports.login = function (req, res, callback) {
     var user = {
-        id: req.body.id,
-        pass: req.body.pass
+        id: req.body.id || req.session.user.id,
+        pass: req.body.pass || req.session.user.pass
     };
     var remember = !!req.body.remember;
 
@@ -33,8 +45,7 @@ module.exports.login = function (req, res, onError) {
         }
         req.session.user.name = response.name;
         req.session.user.cookie = response.cookie;
-        var referer = req.session.referer;
-        req.session.referer = null;
+        req.session.user.cookieAge = new Date().getTime();
         if (remember) {
             // User will be kept logged in for 28 days
             req.session.cookie.maxAge = 28 * 24 * 60 * 60 * 1000;
@@ -43,7 +54,7 @@ module.exports.login = function (req, res, onError) {
             // User will have to log on when browser restarts
             req.session.cookie.expires = false;
         }
-        res.redirect(referer || '/');
+        callback(err);
     });
 }
 
