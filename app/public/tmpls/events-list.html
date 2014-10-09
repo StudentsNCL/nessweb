@@ -5,7 +5,7 @@
 			<li>
 				<span class="pull-left event <%= event['class'] %>"></span>&nbsp;
 				<a href="<%= event.url ? event.url : 'javascript:void(0)' %>" data-event-id="<%= event.id %>"
-					data-event-class="<%= event['class'] %>" class="event-item">
+					data-event-class="<%= event['class'] %>" class="event-item" title="<%= event.module %>">
 					<%= event.title %></a>
 			</li>
 		<% }) %>

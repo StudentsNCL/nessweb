@@ -84,7 +84,11 @@ exports.calendar = function(req, res) {
                 if(moment().diff(result[i].coursework[j].due) < 0)
                     json.result.push({
                         title: result[i].coursework[j].title,
-                        due: result[i].coursework[j].due
+                        code: result[i].code,
+                        module: result[i].title,
+                        due: result[i].coursework[j].due,
+                        url: result[i].coursework[j].url,
+                        spec: result[i].coursework[j].spec
                     })
             }
         }
@@ -159,8 +163,9 @@ exports.json = {
                 for(var j = 0; j < result[i].coursework.length; j++) {
                     json.result.push({
                         id: parseInt(''+i+j),
-                        title: result[i].coursework[j].title,
-                        url: 'http://example.com',
+                        title: result[i].code + " - " + result[i].coursework[j].title,
+                        module: result[i].title,
+                        url: result[i].coursework[j].spec ? "/coursework/specification/" + result[i].coursework[j].spec : result[i].coursework[j].url,
                         class: "event-important",
                         start: parseInt(moment(result[i].coursework[j].due).format('X')+'000'),
                         end: parseInt(moment(result[i].coursework[j].due).format('X')+'000')

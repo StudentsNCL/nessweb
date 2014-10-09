@@ -27,7 +27,7 @@
     {{#each coursework.result}}
     <div>
         <p>
-            <strong>{{title}}</strong><br />
+            <strong><span title="{{module}}">{{code}}</span> - {{#if url}}<a href="{{#if spec}}/coursework/specification/{{spec}}{{else}}{{url}}{{/if}}">{{title}}</a>{{else}}{{title}}{{/if}}</strong><br />
             <span class="small" title="{{formatDate due}}">Due {{dueDate due}}</span>
         </p>
     </div>
