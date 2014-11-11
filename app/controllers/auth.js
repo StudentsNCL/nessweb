@@ -46,6 +46,7 @@ module.exports.login = function (req, res, callback) {
         req.session.user.name = response.name;
         req.session.user.cookie = response.cookie;
         req.session.user.cookieAge = new Date().getTime();
+        res.locals.user = req.session.user;
         if (remember) {
             // User will be kept logged in for 28 days
             req.session.cookie.maxAge = 28 * 24 * 60 * 60 * 1000;
