@@ -1,0 +1,7 @@
+<h1>You have submitted your coursework</h1>
+<p>Your submission has been received and stored.</p>
+<p>The files you submitted were:</p>
+{{#each files}}
+<p>{{name}} {{type}} - {{size}} bytes<br />SHA1 file checksum: <strong>{{checksum}}</strong><p>
+{{/each}}
+<p>Your receipt is: <strong>{{receipt}}<strong></p>

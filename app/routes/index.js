@@ -11,6 +11,11 @@ module.exports = function (app) {
     app.post('/login', ctrl.login_post);
 
     app.get('/coursework', auth, ctrl.coursework);
+    app.get('/coursework/submit/:exid', auth, ctrl.getSubmit);
+    app.post('/coursework/submit/:exid', auth, ctrl.submit);
+    app.get('/coursework/submit/:did/:name', auth, ctrl.getExid);
+    app.post('/coursework/submit/upload/:uniq', auth, ctrl.submit.upload);
+    app.post('/coursework/upload/delete/:uniq', auth, ctrl.deleteFile);
     app.get('/coursework/specification/:id', auth, ctrl.coursework.specification);
 
     app.get('/calendar', auth, ctrl.calendar);

@@ -1,0 +1,57 @@
+<h1>Submit Courswork for {{module.code}}: {{module.title}}</h1>
+<h2>{{coursework}}</h2>
+{{#if error}}
+<div class="alert alert-danger" role="alert"><strong>Error:</strong> {{error}}</div>
+{{else}}
+<p>Coursework due by: <strong>{{formatDate due}}</strong></p>
+{{#dateAfter due}}
+<div class="alert alert-danger" role="alert"><strong>WARNING:</strong> This submission is late and you may be penalised</div>
+{{/dateAfter}}
+{{#if submits}}
+<div class="alert alert-info" role="alert">You have already made {{submits}} submission{{#ifCond submits '>' '1'}}s{{/ifCond}} for this exercise before, make sure you have selected the right exercise!</div>
+{{/if}}
+<form id="submitForm" role="form" method="post" action="/coursework/submit/{{exid}}">
+    <p>Please note that by submitting your work you are agreeing that it may be processed and stored by plagiarism detection systems.</p>
+    <div class="form-group">
+        <label for="email">Optional Email</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="You will automatically receive an email to your Newcastle address" />
+    </div>
+    <div class="form-group">
+        <input name="year" type="hidden" value="{{year}}" />
+        <input name="did" type="hidden" value="{{did}}" />
+        <input name="uniq" type="hidden" value="{{uniq}}" />
+        <input name="depid" type="hidden" value="{{depid}}" />
+        <input name="filesize" type="hidden" value="{{filesize}}" />
+        <span id="exid" style="display: none">{{exid}}</span>
+        <span id="files" style="display: none">{{files}}</span>
+        <span id="filesize" style="display: none">{{filesizemb}}</span>
+        <label for="upload">Files</label>
+        <p>This coursework submission is expecting <strong>{{files}}</strong> file{{#ifCond files '!=' 1}}s{{/ifCond}} - you cannot do partial submissions. Files must be smaller than {{filesizemb}} MB.</p>
+        <p>Files can be of these types: {{filetypes}}</p>
+        <div id="upload" class="dropzone" >
+            <!--<div class="fallback">
+                <label for="file">File input</label>
+                <input type="file" id="file">
+            </div>-->
+        </div>
+    </div>
+    <div id="warnfiles" style="display:none" class="alert alert-warning alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Are you sure?</strong> You have only uploaded <strong><span id="numfiles">0 files</span></strong> but the submission requires <strong>{{files}} file{{#ifCond files '!=' 1}}s{{/ifCond}}</strong>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+    <p>By submitting you declare that this assignment is your own work and that you have correctly acknowledged the work of others. This assignment must be in accordance with University and School guidance on good academic conduct (and how to avoid plagiarism and other assessment irregularities).  University guidance is available at <a href="http://www.ncl.ac.uk/right-cite">www.ncl.ac.uk/right-cite</a></p>
+    <p>Please note <a href="http://www.ncl.ac.uk/regulations/">University General Regulations</a> (General Regulations or the Submission of work section) P61, P62(b) and P63 :</p>
+    <blockquote>
+        <strong>P61</strong>:<em>&quot;Students are responsible for retaining all forms of assessed workreturned to them after marking. Assessed work so retained may be recalled from students, if required by external examiners or for examination review purposes, or for quality assessment or audit purposes. Rules governing the arrangements for the retention and recall of assessed work shall be specified in the relevant degree programme handbook.&quot;</em>
+    </blockquote>
+    <blockquote>
+        <strong>P62(b)</strong>: <em>&quot;The candidate shall be subject to such academic consequences as the board of examiners may determine with regard to the marking of the work and may also be subject to disciplinary action as determined by the chair of the board of examiners or the Academic Registrar, as appropriate, in accordance with the University Student Disciplinary Procedure and Procedure for Assessment Irregularities, both available at <a href="http://www.ncl.ac.uk/students/progress/staff-resources/procedures.htm">Procedures - Supplementary Guidance for Staff</a></em>
+    </blockquote>
+    <blockquote>
+        <strong>63</strong>: <em>&quot;Any student whose examination script, or other work submitted for assessment towards a degree, diploma or other qualification to be granted by the University, contains the unacknowledged work of another, either verbatim or in substance, or contains fabricated research results, or is found to be a case of self-plagiarism shall be subject to the provisions of Regulation 62(b) above.&quot;</em>
+    </blockquote>
+</form>
+{{/if}}{{!/error}}

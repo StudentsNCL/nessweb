@@ -1,7 +1,8 @@
 var ness = require('nessjs'),
     session = require('express-session'),
     auth = require('./auth'),
-    moment = require('moment');
+    moment = require('moment'),
+    fs = require('fs');
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -133,7 +134,7 @@ exports.feedback.exam = function(req, res) {
 exports.feedback.general = function(req, res) {
     ness.getFeedback({ general: req.params.id }, req.session.user, function(err, result) {
     if (err) {
-        return auth.logout(true, eq, res);
+        return auth.logout(true, req, res);
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
     })
@@ -146,6 +147,75 @@ exports.feedback.personal = function(req, res) {
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
     })
+}
+
+exports.getExid = function(req, res) {
+    ness.getExid({did: req.params.did, name: req.params.name}, req.session.user, function(err, result) {
+        if(err) {
+            if(typeof err === 'string')
+                return res.render('coursework/submit', {error: err});
+            else
+                return auth.logout(true, req, res);
+        }
+        return res.redirect('/coursework/submit/' + result);
+    });
+}
+
+exports.getSubmit = function(req, res) {
+    ness.getSubmit(req.params.exid, req.session.user, function(err, result) {
+        if(err) {
+            return auth.logout(true, req, res);
+        }
+        result.filesizemb = result.filesize / 1048576;
+        result.dropzone = true;
+        res.render('coursework/submit', result);
+    });
+}
+
+exports.submit = function(req, res) {
+    var details = {
+        did: req.body.did,
+        exid: req.params.exid,
+        depid: req.body.depid,
+        dir: 'uploads/',
+        uniq: req.body.uniq,
+        year: req.body.year,
+        email: req.body.email,
+        files: req.session.files || []
+    }
+    if(details.files.length == 0) {
+        return res.redirect('coursework/submit/' + details.exid);
+    }
+    delete req.session.files;
+    ness.submit(details, req.session.user, function(err, result) {
+        res.render('coursework/submitted', result);
+        delete req.session.uniq;
+    });
+}
+
+exports.deleteFile = function(req, res) {
+    fs.unlinkSync('uploads/' + req.params.uniq + '/' + req.body.file);
+    res.send('done');
+}
+
+exports.submit.upload = function(req, res) {
+    // If the uniq is different then clean up old files
+    if(req.session.uniq && req.session.uniq != req.params.uniq) {
+        deleteFolder(req.session.uniq);
+    }
+    req.session.uniq = req.params.uniq;
+    req.session.files = [];
+    req.busboy.on('file', function(fieldname, file, filename) {
+        if(!fs.existsSync('uploads/' + req.params.uniq))
+            fs.mkdirSync('uploads/' + req.params.uniq);
+        file.pipe(fs.createWriteStream('uploads/' + req.params.uniq + '/' + filename));
+        req.session.files.push(filename);
+    });
+    req.busboy.on('finish', function() {
+        res.send('');
+    });
+
+    req.pipe(req.busboy);
 }
 
 exports.json = {
@@ -175,4 +245,16 @@ exports.json = {
             res.send(json);
         });
     }
+}
+
+function deleteFolder(uniq) {
+    var path = 'uploads/' + uniq + '/';
+    fs.readdir(path, function(err, files) {
+        if(files.length > 0){
+            files.forEach(function(file) {
+                fs.unlinkSync(path + file);
+            });
+        }
+        fs.rmdir(path);
+    });
 }
