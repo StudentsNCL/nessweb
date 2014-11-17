@@ -1,0 +1,21 @@
+{
+    "success": 1,
+    "result": [
+        {
+            "id": 293,
+            "title": "Event 1",
+            "url": "http://example.com",
+            "class": "event-important",
+            "start": 1400013688000,
+            "end": 1400035688000
+        },
+        {
+            "id": 294,
+            "title": "Event 2",
+            "url": "http://example.com",
+            "class": "event-important",
+            "start": 1400093688000,
+            "end": 1400130688000
+        }
+    ]
+}

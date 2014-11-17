@@ -1,0 +1,28 @@
+.container-main {
+  margin-top: 50px;
+}
+
+.form-signin {
+  padding-top: 50px;
+}
+
+.form-signin legend,
+.form-signin p {
+  text-align: center;
+}
+
+.form-signin .form-group.first {
+  margin-top: 40px;
+}
+
+.col-md-12 .feedback-button
+{
+    margin: 1px 0;
+}
+
+@media (min-width: 1200px) {
+    .col-md-12 .feedback-button
+    {
+        width: 49%;
+    }
+}

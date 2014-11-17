@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Coursework &#187; Submit &#187; 35500</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Favicons -->
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+        <link rel="icon" type="image/png" href="/favicon-196x196.png" sizes="196x196">
+        <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <meta name="msapplication-TileColor" content="#c04127">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+
+        <link rel="stylesheet" href="/css/vendor/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/main.css">
+        
+        
+        <link rel="stylesheet" href="/css/vendor/dropzone.min.css">
+        
+        <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
+    </head>
+    <body>
+        <!--[if lt IE 9]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+        <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+            <div class="container-fluid">
+
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">NESSweb Demo</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li class=""><a href="/modules.html"><span class="glyphicon glyphicon-book"></span> Modules</a></li>
+                        <li class="active"><a href="/coursework.html"><span class="glyphicon glyphicon-tasks"></span> Coursework</a></li>
+                        <li class=""><a href="/calendar.html"><span class="glyphicon glyphicon-calendar"></span> Calendar</a></li>
+                        <li class=""><a href="/attendance.html"><span class="glyphicon glyphicon-check"></span> Attendance</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">A. User &nbsp;<span class="glyphicon glyphicon-user"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#"><span class="glyphicon glyphicon-cog"></span> Settings</a></li>
+                                <li class="divider"></li>
+                                <li><a href="/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+        <div class="container container-main">
+            <h1>Submit Courswork for CSC3422: Website Construction and Management (Server-side)</h1>
+<h2>Assignment 3:</h2>
+
+<p>Coursework due by: <strong>Monday 24 November 2014 - 12:00</strong></p>
+
+
+<div class="alert alert-info" role="alert">You have already made 2 submissions for this exercise before, make sure you have selected the right exercise!</div>
+
+<form id="submitForm" role="form" method="post" action="/coursework/submit/35500">
+    <p>Please note that by submitting your work you are agreeing that it may be processed and stored by plagiarism detection systems.</p>
+    <div class="form-group">
+        <label for="email">Optional Email</label>
+        <input type="email" class="form-control" name="email" id="email" placeholder="You will automatically receive an email to your Newcastle address" />
+    </div>
+    <div class="form-group">
+        <input name="year" type="hidden" value="2014" />
+        <input name="did" type="hidden" value="31306" />
+        <input name="uniq" type="hidden" value="546a42f608d6f" />
+        <input name="depid" type="hidden" value="16" />
+        <input name="filesize" type="hidden" value="134217728" />
+        <span id="exid" style="display: none">35500</span>
+        <span id="files" style="display: none">6</span>
+        <span id="filesize" style="display: none">128</span>
+        <label for="upload">Files</label>
+        <p>This coursework submission is expecting <strong>6</strong> files - you cannot do partial submissions. Files must be smaller than 128 MB.</p>
+        <p>Files can be of these types: </p>
+        <div id="upload" class="dropzone" >
+            <!--<div class="fallback">
+                <label for="file">File input</label>
+                <input type="file" id="file">
+            </div>-->
+        </div>
+    </div>
+    <div id="warnfiles" style="display:none" class="alert alert-warning alert-dismissible fade in" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>Are you sure?</strong> You have only uploaded <strong><span id="numfiles">0 files</span></strong> but the submission requires <strong>6 files</strong>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+    </div>
+    <p>By submitting you declare that this assignment is your own work and that you have correctly acknowledged the work of others. This assignment must be in accordance with University and School guidance on good academic conduct (and how to avoid plagiarism and other assessment irregularities).  University guidance is available at <a href="http://www.ncl.ac.uk/right-cite">www.ncl.ac.uk/right-cite</a></p>
+    <p>Please note <a href="http://www.ncl.ac.uk/regulations/">University General Regulations</a> (General Regulations or the Submission of work section) P61, P62(b) and P63 :</p>
+    <blockquote>
+        <strong>P61</strong>:<em>&quot;Students are responsible for retaining all forms of assessed workreturned to them after marking. Assessed work so retained may be recalled from students, if required by external examiners or for examination review purposes, or for quality assessment or audit purposes. Rules governing the arrangements for the retention and recall of assessed work shall be specified in the relevant degree programme handbook.&quot;</em>
+    </blockquote>
+    <blockquote>
+        <strong>P62(b)</strong>: <em>&quot;The candidate shall be subject to such academic consequences as the board of examiners may determine with regard to the marking of the work and may also be subject to disciplinary action as determined by the chair of the board of examiners or the Academic Registrar, as appropriate, in accordance with the University Student Disciplinary Procedure and Procedure for Assessment Irregularities, both available at <a href="http://www.ncl.ac.uk/students/progress/staff-resources/procedures.htm">Procedures - Supplementary Guidance for Staff</a></em>
+    </blockquote>
+    <blockquote>
+        <strong>63</strong>: <em>&quot;Any student whose examination script, or other work submitted for assessment towards a degree, diploma or other qualification to be granted by the University, contains the unacknowledged work of another, either verbatim or in substance, or contains fabricated research results, or is found to be a case of self-plagiarism shall be subject to the provisions of Regulation 62(b) above.&quot;</em>
+    </blockquote>
+</form>
+
+
+        </div>
+
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
+        <script src="/js/vendor/bootstrap.min.js"></script>
+        
+        
+        <script type="text/javascript" src="/js/vendor/dropzone.min.js"></script>
+        
+        <script src="/js/main.js"></script>
+
+    </body>
+</html>
