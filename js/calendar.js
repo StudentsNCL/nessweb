@@ -1,8 +1,8 @@
 
 var calendar = $("#calendar").calendar(
     {
-        tmpl_path: "/tmpls/",
-        events_source: '/json/calendar',
+        tmpl_path: "tmpls/",
+        events_source: 'json/calendar',
         first_day: 1,
         onAfterEventsLoad: function(events) {
 			if(!events) {
