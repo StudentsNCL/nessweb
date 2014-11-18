@@ -69,20 +69,35 @@ $(function() {
                     }
                 });
 
+                this.on("sending", function() {
+                    $submitButton.attr('disabled', 'disabled');
+                });
 
-                this.on("addedfile", function() {
+                this.on("success", function() {
                     $submitButton.removeAttr('disabled');
                 });
-            }
-            // Accept only correct files?
-            /*,accept: function(file, done) {
-                if (file.type != "image/jpeg" || file.type != "image/png") {
+            },
+            accept: function(file, done) {
+                if(this.files.length > 1){
+                    for(var i = 0; i < this.files.length - 1; i++){
+                        if(this.files[i].name === file.name){
+                            // Don't reupload file that exists
+                            var newFile = this.files[this.files.length - 1];
+                            newFile.previewElement.parentNode.removeChild(newFile.previewElement);
+                            this.files.pop();
+                            return done("Error! This file has already been uploaded");
+                        }
+                    }
+                    return done();
+                }
+                // Accept only correct files?
+                /*if (file.type != "image/jpeg" || file.type != "image/png") {
                     done("Error! Files of this type are not accepted");
-                }
+                }*/
                 else {
-                    done();
+                    return done();
                 }
-            },*/
+            },
         });
     }
 });

@@ -11,10 +11,10 @@ module.exports = function (app) {
     app.post('/login', ctrl.login_post);
 
     app.get('/coursework', auth, ctrl.coursework);
-    app.get('/coursework/submit/:did/:name', auth, ctrl.getSubmit);
-    app.post('/coursework/submit/:exid', auth, ctrl.submit);
     app.post('/coursework/submit/upload/:uniq', auth, ctrl.submit.upload);
-    app.post('/coursework/upload/delete/:uniq', auth, ctrl.deleteFile);
+    app.get('/coursework/submit/:did/:name', auth, ctrl.getSubmit);
+    app.post('/coursework/submit/:did/:name', auth, ctrl.submit.submit);
+    app.post('/coursework/upload/delete/:uniq', auth, ctrl.submit.deleteFile);
     app.get('/coursework/specification/:id', auth, ctrl.coursework.specification);
 
     app.get('/calendar', auth, ctrl.calendar);
