@@ -1,7 +1,7 @@
 <div class="row">
     {{#each coursework}}
     <div class="col-md-12">
-        <h1>{{code}}: {{title}}</h1>
+        <h2>{{code}}: {{title}}</h2>
         {{#if this.coursework}}
         <table class="table table-condensed table-striped">
             <thead>
@@ -30,15 +30,15 @@
                           </div>
                         {{/ifCond}}{{!late and mark > 40}}
                         </div>
-                        <a href="{{#if general}}feedback/general/{{general}}{{/if}}" data-toggle="modal" data-target="#feedback-modal" class="btn btn-default btn-xs feedback-button {{#unless general}}disabled{{/unless}}" role="button">General Feedback</a>
-                        <a href="{{#if feedback}}feedback/personal/{{feedback}}{{/if}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button {{#unless feedback}}disabled{{/unless}}" role="button">Personal Feedback</a>
+                        <a href="{{#if general}}feedback/general/{{general}}{{/if}}" data-toggle="modal" data-target="#feedback-modal" class="btn btn-default btn-xs feedback-button col-xs-12 col-lg-6 {{#unless general}}disabled{{/unless}}" role="button">General Feedback</a>
+                        <a href="{{#if feedback}}feedback/personal/{{feedback}}{{/if}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button col-xs-12 col-lg-6 pull-right {{#unless feedback}}disabled{{/unless}}" role="button">Personal Feedback</a>
                     </td>
                     {{else}}
                         {{#if submitted}}
                         {{#if late}}
                     <td><span style="color:red" title="{{formatDate submitted}} - This coursework was submitted late!">Submitted {{dueDate submitted}}</span></td>
                         {{else}}
-                    <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}</span></td>
+                    <td><span title="{{formatDate submitted}}">Submitted {{dueDate submitted}}{{#dateAfter due}}{{else}}<a href="/coursework/submit/{{../../../../../did}}/{{safeTitle}}" class="btn btn-success btn-xs col-xs-12 col-lg-3 pull-right" role="button">Resubmit</a>{{/dateAfter}}</span></td>
                         {{/if}}{{!/late}}
                         {{else}}{{!not submitted}}
                             {{#dateAfter due}}
@@ -51,7 +51,7 @@
                                     {{/if}}{{!/extension}}
                                 {{/if}}{{!/late}}
                             {{else}}
-                    <td><span title="{{formatDate due}}">Due {{dueDate due}}</span></td>
+                    <td><span title="{{formatDate due}}">Due {{dueDate due}}</span><a href="/coursework/submit/{{../../../../did}}/{{safeTitle}}" class="btn btn-success btn-xs col-xs-12 col-lg-3 pull-right" role="button">Submit</a></td>
                             {{/dateAfter}}{{!/dateAfter due}}
                         {{/if}}{{!/submitted}}
                     {{/if}}{{!/mark}}

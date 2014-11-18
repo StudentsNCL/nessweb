@@ -28,7 +28,7 @@
     <div>
         <p>
             <strong><span title="{{module}}">{{code}}</span> - {{#if url}}<a href="{{#if spec}}/coursework/specification/{{spec}}{{else}}{{url}}{{/if}}">{{title}}</a>{{else}}{{title}}{{/if}}</strong><br />
-            <span class="small" title="{{formatDate due}}">Due {{dueDate due}}</span>
+            <span class="small" title="{{formatDate due}}">Due {{dueDate due}}<a href="/coursework/submit/{{did}}/{{safeTitle}}" class="btn btn-success btn-xs col-xs-12 col-lg-3 pull-right" role="button">Submit</a></span>
         </p>
     </div>
     {{/each}}

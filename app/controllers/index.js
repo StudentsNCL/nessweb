@@ -1,7 +1,9 @@
 var ness = require('nessjs'),
     session = require('express-session'),
     auth = require('./auth'),
-    moment = require('moment');
+    moment = require('moment'),
+    fs = require('fs'),
+    checksum = require('checksum');
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -86,10 +88,12 @@ exports.calendar = function(req, res) {
                         title: result[i].coursework[j].title,
                         code: result[i].code,
                         module: result[i].title,
+                        did: result[i].did,
+                        safeTitle: result[i].coursework[j].safeTitle,
                         due: result[i].coursework[j].due,
                         url: result[i].coursework[j].url,
                         spec: result[i].coursework[j].spec
-                    })
+                    });
             }
         }
         json.result.sort(function(a, b) {
@@ -114,29 +118,29 @@ exports.coursework.specification = function(req, res) {
 
 exports.feedback = function(req, res) {
     ness.getFeedback({ exid: req.params.id }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, req, res);
-    }
-    res.render('modules/feedback', { layout: false, feedback: result});
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('modules/feedback', { layout: false, feedback: result});
     });
 }
 
 exports.feedback.exam = function(req, res) {
     ness.getFeedback({ paperId: req.params.id, stid: req.params.stid }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, req, res);
-    }
-    res.render('modules/feedback', { layout: false, feedback: result});
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('modules/feedback', { layout: false, feedback: result});
     });
 }
 
 exports.feedback.general = function(req, res) {
     ness.getFeedback({ general: req.params.id }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, eq, res);
-    }
-    res.render('coursework/feedback', { layout: false, feedback: result});
-    })
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('coursework/feedback', { layout: false, feedback: result});
+    });
 }
 
 exports.feedback.personal = function(req, res) {
@@ -145,7 +149,94 @@ exports.feedback.personal = function(req, res) {
         return auth.logout(true, req, res);
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
-    })
+    });
+}
+
+exports.getSubmit = function(req, res) {
+    ness.getSubmit({did: req.params.did, name: req.params.name}, req.session.user, function(err, result) {
+        if(err) {
+            if(typeof err === 'string')
+                return res.render('coursework/submit', {error: err});
+            else
+                return auth.logout(true, req, res);
+        }
+        result.filesizemb = result.filesize / 1048576;
+        result.dropzone = true;
+        result.safeTitle = req.params.name;
+        res.render('coursework/submit', result);
+    });
+}
+
+exports.submit = {
+    submit: function(req, res) {
+        var details = {
+            did: req.body.did,
+            exid: req.body.exid,
+            depid: req.body.depid,
+            dir: 'uploads/',
+            uniq: req.body.uniq,
+            year: req.body.year,
+            email: req.body.email,
+            files: req.session.files || [],
+            filesize: req.body.filesize
+        }
+        if(details.files.length == 0) {
+            return res.render('coursework/submit', {error: 'You have to submit at least 1 file'});
+        }
+        delete req.session.files;
+        ness.submit(details, req.session.user, function(err, result) {
+            if(err){
+                res.render('coursework/submitted', {error: 'An unknown error occured'});
+            }
+            else{
+                // Check that the checksums match
+                for(var i = 0; i < result.files.length; i++)(function(i) {
+                    checksum.file('uploads/' + req.body.uniq + '/' + result.files[i].name, function (err, cs) {
+                        if (cs === result.files[i].checksum) {
+                            result.files[i].checksumMatch = true;
+                        }
+                        else{
+                            result.warning = 'One or more of the files you submitted have mismatched checksums with NESS, you should check your submission';
+                        }
+                        if(i == result.files.length - 1){
+                            deleteFolder(req.body.uniq);
+                            return res.render('coursework/submitted', result);
+                        }
+                    });
+                })(i);
+            }
+            delete req.session.uniq;
+        });
+
+    },
+    upload: function(req, res) {
+        // If the uniq is different then clean up old files
+        if(req.session.uniq && req.session.uniq != req.params.uniq) {
+            req.session.files = [];
+            deleteFolder(req.session.uniq);
+        }
+        req.session.uniq = req.params.uniq;
+        if(!req.session.files)
+            req.session.files = [];
+        req.busboy.on('file', function(fieldname, file, filename) {
+            if(!fs.existsSync('uploads/' + req.params.uniq))
+                fs.mkdirSync('uploads/' + req.params.uniq);
+            file.pipe(fs.createWriteStream('uploads/' + req.params.uniq + '/' + filename));
+            req.session.files.push(filename);
+        });
+        req.busboy.on('finish', function() {
+            res.send('');
+        });
+
+        req.pipe(req.busboy);
+    },
+    deleteFile: function(req, res) {
+        fs.unlinkSync('uploads/' + req.params.uniq + '/' + req.body.file);
+        var pos = req.session.files.indexOf(req.body.file);
+        if(pos > -1)
+            req.session.files.splice(pos, 1);
+        res.send('done');
+    }
 }
 
 exports.json = {
@@ -169,10 +260,22 @@ exports.json = {
                         class: "event-important",
                         start: parseInt(moment(result[i].coursework[j].due).format('X')+'000'),
                         end: parseInt(moment(result[i].coursework[j].due).format('X')+'000')
-                    })
+                    });
                 }
             }
             res.send(json);
         });
     }
+}
+
+function deleteFolder(uniq) {
+    var path = 'uploads/' + uniq + '/';
+    fs.readdir(path, function(err, files) {
+        if(files){
+            files.forEach(function(file) {
+                fs.unlinkSync(path + file);
+            });
+        }
+        fs.rmdirSync(path);
+    });
 }

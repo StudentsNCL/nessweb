@@ -1,0 +1,15 @@
+<h1>You have submitted your coursework</h1>
+{{#if error}}
+<div class="alert alert-error" role="alert"><strong>Error:</strong> {{error}}</div>
+{{else}}
+{{#if warning}}
+<div class="alert alert-warning" role="alert"><strong>Warning:</strong> {{warning}}</div>
+{{else}}
+<div class="alert alert-success" role="alert"><strong>Success:</strong> Your submission has been received and stored.</div>
+{{/if}}{{! /warning}}
+{{/if}}{{! /error}}
+<p>The files you submitted were:</p>
+{{#each files}}
+<p>{{name}} {{type}} - {{size}} bytes<br />SHA1 file checksum: <strong>{{checksum}}</strong> {{#if checksumMatch}}<span class="glyphicon glyphicon-ok-circle" style="color: #468847" title="The checksum calcualted on NESSweb matches NESS"></span>{{else}}<span class="glyphicon glyphicon-exclamation-sign" style="color: #C09853" title="Warning: The checksum calcualted on NESSweb doesn't match NESS"></span>{{/if}}<p>
+{{/each}}
+<p>Your receipt is: <strong>{{receipt}}<strong></p>

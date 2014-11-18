@@ -1,5 +1,5 @@
 .container-main {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .form-signin {
@@ -13,4 +13,16 @@
 
 .form-signin .form-group.first {
   margin-top: 40px;
+}
+
+.feedback-button
+{
+    margin: 1px 0;
+}
+
+@media (min-width: 1200px) {
+    .feedback-button
+    {
+        width: 49%;
+    }
 }

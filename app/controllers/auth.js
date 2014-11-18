@@ -44,6 +44,7 @@ module.exports.login = function (req, res, callback) {
             return res.redirect('/login');
         }
         req.session.user.name = response.name;
+        req.session.user.fullid = response.fullid;
         req.session.user.cookie = response.cookie;
         req.session.user.cookieAge = new Date().getTime();
         res.locals.user = req.session.user;
