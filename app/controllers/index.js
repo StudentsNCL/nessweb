@@ -87,10 +87,12 @@ exports.calendar = function(req, res) {
                         title: result[i].coursework[j].title,
                         code: result[i].code,
                         module: result[i].title,
+                        did: result[i].did,
+                        safeTitle: result[i].coursework[j].safeTitle,
                         due: result[i].coursework[j].due,
                         url: result[i].coursework[j].url,
                         spec: result[i].coursework[j].spec
-                    })
+                    });
             }
         }
         json.result.sort(function(a, b) {
@@ -115,29 +117,29 @@ exports.coursework.specification = function(req, res) {
 
 exports.feedback = function(req, res) {
     ness.getFeedback({ exid: req.params.id }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, req, res);
-    }
-    res.render('modules/feedback', { layout: false, feedback: result});
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('modules/feedback', { layout: false, feedback: result});
     });
 }
 
 exports.feedback.exam = function(req, res) {
     ness.getFeedback({ paperId: req.params.id, stid: req.params.stid }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, req, res);
-    }
-    res.render('modules/feedback', { layout: false, feedback: result});
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('modules/feedback', { layout: false, feedback: result});
     });
 }
 
 exports.feedback.general = function(req, res) {
     ness.getFeedback({ general: req.params.id }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, req, res);
-    }
-    res.render('coursework/feedback', { layout: false, feedback: result});
-    })
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('coursework/feedback', { layout: false, feedback: result});
+    });
 }
 
 exports.feedback.personal = function(req, res) {
@@ -146,25 +148,16 @@ exports.feedback.personal = function(req, res) {
         return auth.logout(true, req, res);
     }
     res.render('coursework/feedback', { layout: false, feedback: result});
-    })
+    });
 }
 
-exports.getExid = function(req, res) {
-    ness.getExid({did: req.params.did, name: req.params.name}, req.session.user, function(err, result) {
+exports.getSubmit = function(req, res) {
+    ness.getSubmit({did: req.params.did, name: req.params.name}, req.session.user, function(err, result) {
         if(err) {
             if(typeof err === 'string')
                 return res.render('coursework/submit', {error: err});
             else
                 return auth.logout(true, req, res);
-        }
-        return res.redirect('/coursework/submit/' + result);
-    });
-}
-
-exports.getSubmit = function(req, res) {
-    ness.getSubmit(req.params.exid, req.session.user, function(err, result) {
-        if(err) {
-            return auth.logout(true, req, res);
         }
         result.filesizemb = result.filesize / 1048576;
         result.dropzone = true;
@@ -181,7 +174,8 @@ exports.submit = function(req, res) {
         uniq: req.body.uniq,
         year: req.body.year,
         email: req.body.email,
-        files: req.session.files || []
+        files: req.session.files || [],
+        filesize: req.body.filesize
     }
     if(details.files.length == 0) {
         return res.redirect('coursework/submit/' + details.exid);

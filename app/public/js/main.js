@@ -63,7 +63,6 @@ $(function() {
                     else {
                         $('.dropzone').removeClass('dz-clickable'); // remove cursor
                         //$('.dropzone')[0].removeEventListener('click', this.listeners[1].events.click);
-                        $('input').attr('disabled', 'disabled');
                         $submitButton.attr('disabled','disabled');
                         $('.dz-remove').remove();
                         $submitButton.text("Submitting");
