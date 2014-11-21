@@ -35,6 +35,9 @@
         {{#if dropzone}}
         <link rel="stylesheet" href="/css/vendor/dropzone.min.css">
         {{/if}}
+        {{#eq section 'modules'}}
+        <link rel="stylesheet" href="/css/vendor/bootstrap-slider.min.css">
+        {{/eq}}
         <script src="/js/vendor/modernizr-2.6.2.min.js"></script>
     </head>
     <body>
@@ -86,13 +89,16 @@
         <script>window.jQuery || document.write('<script src="/js/vendor/jquery-1.11.1.min.js"><\/script>')</script>
         <script src="/js/vendor/bootstrap.min.js"></script>
         {{#eq section 'calendar'}}
-        <script type="text/javascript" src="js/vendor/underscore-min.js"></script>
-        <script type="text/javascript" src="js/vendor/calendar.js"></script>
-        <script type="text/javascript" src="js/calendar.js"></script>
+        <script type="text/javascript" src="/js/vendor/underscore-min.js"></script>
+        <script type="text/javascript" src="/js/vendor/calendar.js"></script>
+        <script type="text/javascript" src="/js/calendar.js"></script>
         {{/eq}}
         {{#if dropzone}}
         <script type="text/javascript" src="/js/vendor/dropzone.min.js"></script>
         {{/if}}
+        {{#eq section 'modules'}}
+        <script type="text/javascript" src="/js/vendor/bootstrap-slider.min.js"></script>
+        {{/eq}}
         <script src="/js/main.js"></script>
 
     </body>

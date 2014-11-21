@@ -2,8 +2,8 @@ var ness = require('nessjs');
 
 module.exports = function (req, res, next) {
     if (!req.session.user || !req.session.user.name || !req.session.user.cookie) {
-        res.redirect('/login');
         req.session.referer = req.originalUrl;
+        res.redirect('/login');
         return;
     }
     // If the Shibboleth cookie has expired then relogin before going to page

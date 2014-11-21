@@ -100,4 +100,26 @@ $(function() {
             },
         });
     }
+
+    $('.slider').each(function(){
+        $(this).slider().on('slide', function(slider){
+            $(this).parent().find('.mark').text(slider.value);
+            updateTotal();
+        });
+    });
+
+    updateTotal();
+
+    function updateTotal(){
+        if($('#totalProgress').length == 0)
+            return;
+        var total = 0;
+        $('.mark').each(function(){
+            total += parseInt($(this).text()) * parseInt($(this).closest('tr').find('.percentage').text()) / 100;
+        });
+        var newClass = total >= 70 ? 'success' : total >= 40 ? 'warning' : 'danger';
+        $('#totalProgress')[0].className = $('#totalProgress')[0].className.replace(/(progress-bar-)[a-z]+/, '$1' + newClass);
+        $('#total').text(Math.round(total * 10) / 10);
+        $('#totalProgress').width(total + '%');
+    }
 });

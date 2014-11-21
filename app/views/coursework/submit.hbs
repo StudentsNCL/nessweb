@@ -27,7 +27,7 @@
         <span id="filesize" style="display: none">{{filesizemb}}</span>
         <label for="upload">Files</label>
         <p>This coursework submission is expecting <strong>{{files}}</strong> file{{#ifCond files '!=' 1}}s{{/ifCond}} - you cannot do partial submissions. Files must be smaller than {{filesizemb}} MB.</p>
-        <p>Files can be of these types: {{filetypes}}</p>
+        <p>Files can be of these types: <strong>{{filetype}}</strong></p>
         <div id="upload" class="dropzone" >
             <!--<div class="fallback">
                 <label for="file">File input</label>

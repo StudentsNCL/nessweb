@@ -6,26 +6,24 @@
             <thead>
                 <tr>
                     <th>Module</th>
-                    <th>Credits</th>
+                    {{#if showAttempt}}
                     <th>Attempt</th>
                     <th>Attempt Mark</th>
+                    {{/if}}
                     <th>Final Mark</th>
-                    <th>Decision</th>
                     <th>Attendance</th>
-                    <th>Details</th>
                 </tr>
             </thead>
             <tbody>
              {{#each modules}}
                 <tr>
-                    <td>{{code}}</td>
-                    <td>{{credits}}</td>
+                    <td><a title="{{#if name}}{{code}} - {{/if}}{{credits}} Credits" href="/modules/{{year}}/{{../stage}}/{{id}}">{{#if name}}{{name}}{{else}}{{code}}{{/if}}</a></td>
+                    {{#if showAttempt}}
                     <td>{{attempt}}</td>
                     <td>{{attemptMark}}</td>
-                    <td>{{finalMark}}</td>
-                    <td>{{decision}}</td>
+                    {{/if}}
+                    <td>{{finalMark}} - {{decision}}</td>
                     <td>{{#gte attendance.attendance 0}}{{attendance.attendance}}%{{else}}-{{/gte}}</td>
-                    <td><a href="/modules/{{year}}/{{../stage}}/{{id}}">View Details</a></td>
                 </tr>
             {{/each}}
             </tbody>

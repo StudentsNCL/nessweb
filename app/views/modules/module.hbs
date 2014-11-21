@@ -2,13 +2,13 @@
     <li><a href="/modules">Modules</a></li>
     <li class="active">{{module.code}}</li>
 </ol>
-<h1>{{module.code}} Module Overview</h1>
+<h1>{{#if module.name}}{{module.name}}{{else}}{{module.code}}{{/if}} Module Overview</h1>
 <table class="table table-condensed table-striped">
     <thead>
         <tr>
-            <th>Name</th>
-            <th>Mark</th>
-            <th>Feedback</th>
+            <th class="col-xs-5 col-sm-6">Name</th>
+            <th class="col-xs-5 col-sm-4">Mark</th>
+            <th class="col-xs-2 col-sm-2">Feedback</th>
         </tr>
     </thead>
     <tbody>
@@ -19,9 +19,10 @@
     {{/if}}
     {{#each module.exams}}
         <tr>
-            <td>{{name}} - {{percentage}}% of module</td>
-            <td>{{#if mark}}{{mark}}{{else}}TBR{{/if}}</td>
+            <td>{{name}} - <span class="percentage">{{percentage}}</span>% of module</td>
+            <td>{{#if mark}}<span class="mark">{{mark}}</span>{{else}}<span class="mark">40</span>% <input class="slider" id="mk{{@index}}" data-slider-id='mk{{@index}}Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="40" data-slider-tooltip="hide" />{{/if}}</td>
             <td>{{#if feedback}}<a href="/modules/feedback/{{feedback.paperId}}/{{feedback.stid}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button" role="button">View Feedback</a>{{/if}}</td>
+
         </tr>
     {{/each}}
     {{#if module.coursework}}
@@ -31,17 +32,47 @@
     {{/if}}
     {{#each module.coursework}}
         <tr>
+            {{#eq coursework.length 0}}
+            <td>{{name}} - <span class="percentage">{{percentage}}</span>% of module</td>
+            <td>
+                <span class="mark">40</span>% <input class="slider" id="mk{{@index}}" data-slider-id='mk{{@index}}Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="40" data-slider-tooltip="hide" />
+            </td>
+            <td></td>
+            {{else}}
             <td colspan="3" style="background-color:#c8c4bf"><strong>{{name}} - {{percentage}}% of module</strong></td>
+            {{/eq}}
         </tr>
     {{#each coursework}}
         <tr>
-            <td>{{name}} - {{percentage}}% of module</td>
-            <td>{{#if mark}}{{mark.percent}} - ({{mark.mark}}/{{mark.total}}){{else}}TBR{{/if}}</td>
+            <td>{{name}} - <span class="percentage">{{percentage}}</span>% of module</td>
+            <td>
+            {{#if mark}}
+            <div title="{{mark.mark}} out of {{mark.total}}" class="progress" style="margin-bottom:5px;">
+                <div class="progress-bar animated-bar {{#ifCond (markPass mark) '==' false}} progress-bar-warning{{/ifCond}}" role="progressbar" aria-valuenow="{{mark.percent}}" aria-valuemin="0" aria-valuemax="100" data-width="{{mark.percent}}" style="width: 0%;">
+                <span class="mark">{{mark.percent}}</span>%
+                </div>
+            </div>
+            {{else}}
+            <span class="mark">40</span>% <input class="slider" id="mk{{@index}}" data-slider-id='mk{{@index}}Slider' type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="40" data-slider-tooltip="hide" />
+            {{/if}}
+            </td>
             <td>{{#if feedback}}<a href="/modules/feedback/{{feedback}}" data-toggle="modal" data-target="#feedback-modal"  class="btn btn-default btn-xs feedback-button" role="button">View Feedback</a>{{/if}}</td>
         </tr>
     {{/each}}
     {{/each}}
     </tbody>
+    <tfoot>
+    <tr>
+        <td><strong>Total</strong></td>
+        <td>
+            <div class="progress" style="margin-bottom:5px;">
+                <div id="totalProgress" class="progress-bar progress-bar-success" style="transition: none 0s ease 0s !important;" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+                    <span id="total">0</span>%
+                </div>
+            </div>
+        </td>
+    </tr>
+  </tfoot>
 </table>
 
 <div id="feedback-modal" class="modal fade">

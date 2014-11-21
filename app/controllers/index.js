@@ -50,6 +50,15 @@ exports.modules = function(req, res) {
         if (err) {
             return auth.logout(true, req, res);
         }
+        // Hide attempt & attempt mark if they are the same
+        for(var i = 0; i < stages.length; i++){
+            for(var j = 0; j < stages[i].modules.length; j++){
+                if(stages[i].modules[j].attempt && stages[i].modules[j].attempt != '1'){
+                    stages[i].modules[j].showAttempt = true;
+                    break;
+                }
+            }
+        }
         res.render('modules/modules', {stages: stages});
     });
 };
