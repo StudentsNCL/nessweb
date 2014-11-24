@@ -1,0 +1,21 @@
+<h1>Exams</h1>
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <tr>
+                <th>Module Code</th>
+                <th>Title</th>
+                <th>Date Due</th>
+                <th>Duration</th>
+            </tr>
+            {{#each exams}}
+            <tr>
+                <td>{{module}}</td>
+                <td>{{title}}</td>
+                <td>{{formatDate date}}</td>
+                <td>{{duration}}</td>
+            </tr>
+            {{/each}}
+        </table>
+    </div>
+</div>
