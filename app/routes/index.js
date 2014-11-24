@@ -30,4 +30,6 @@ module.exports = function (app) {
     app.get('/feedback/personal/:id', auth, ctrl.feedback.personal);
 
     app.get('/json/calendar', auth, ctrl.json.calendar);
+
+    app.post('/ajax/mark', auth, ctrl.ajax.mark)
 }

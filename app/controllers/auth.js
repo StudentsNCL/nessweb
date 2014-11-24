@@ -46,6 +46,8 @@ module.exports.login = function (req, res, callback) {
         req.session.user.name = response.name;
         req.session.user.fullid = response.fullid;
         req.session.user.cookie = response.cookie;
+        
+        console.log(req.session.user.cookie);
         req.session.user.cookieAge = new Date().getTime();
         res.locals.user = req.session.user;
         if (remember) {
