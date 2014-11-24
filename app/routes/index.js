@@ -21,6 +21,8 @@ module.exports = function (app) {
 
     app.get('/attendance', auth, ctrl.attendance);
 
+    app.get('/exams', auth, ctrl.exams);
+
     app.get('/modules', auth, ctrl.modules);
     app.get('/modules/feedback/:id', auth, ctrl.feedback);
     app.get('/modules/feedback/:id/:stid', auth, ctrl.feedback.exam);

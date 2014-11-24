@@ -3,7 +3,8 @@ var ness = require('nessjs'),
     auth = require('./auth'),
     moment = require('moment'),
     fs = require('fs'),
-    checksum = require('checksum');
+    checksum = require('checksum'),
+    exams = require('examsjs');
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -161,9 +162,19 @@ exports.feedback.personal = function(req, res) {
     });
 }
 
+exports.exams = function(req, res) {
+    exams.getTimetable(req.session.user, function(err, exams) {
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        console.log(exams);
+        res.render('exams', {exams: exams});
+    });
+}
+
 exports.getSubmit = function(req, res) {
     ness.getSubmit({did: req.params.did, name: req.params.name}, req.session.user, function(err, result) {
-        if(err) {
+        if (err) {
             if(typeof err === 'string')
                 return res.render('coursework/submit', {error: err});
             else
