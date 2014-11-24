@@ -4,7 +4,8 @@ var ness = require('nessjs'),
     moment = require('moment'),
     fs = require('fs'),
     checksum = require('checksum'),
-    exams = require('examsjs');
+    exams = require('examsjs'),
+    ncl = require('ncl-connect');
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -163,13 +164,28 @@ exports.feedback.personal = function(req, res) {
 }
 
 exports.exams = function(req, res) {
-    exams.getTimetable(req.session.user, function(err, exams) {
-        if (err) {
-            return auth.logout(true, req, res);
-        }
-        console.log(exams);
-        res.render('exams', {exams: exams});
-    });
+
+    if(req.session.examUser !== undefined) {
+        getTimetable();
+    } else {
+        ncl.login('http://crypt.ncl.ac.uk/exam-timetable', {
+            id: req.session.user.id,
+            pass: req.session.user.pass,
+        }, function(error, cookie, $) {
+            req.session.examUser = { cookie: cookie };
+            getTimetable();
+        });
+    }
+
+    function getTimetable() {
+        exams.getTimetable(req.session.examUser, function(err, exams) {
+            if (err) {
+                return auth.logout(true, req, res);
+            }
+            console.log(exams);
+            res.render('exams', {exams: exams});
+        });
+    }
 }
 
 exports.getSubmit = function(req, res) {
