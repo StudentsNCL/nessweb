@@ -182,7 +182,6 @@ exports.exams = function(req, res) {
             if (err) {
                 return auth.logout(true, req, res);
             }
-            console.log(exams);
             res.render('exams', {exams: exams});
         });
     }
