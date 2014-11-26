@@ -29,6 +29,7 @@
     "mu2": "^0.5.20",
     "examsjs": "https://github.com/StudentsNCL/examsjs/tarball/master",
     "nessjs": "https://github.com/StudentsNCL/nessjs/tarball/master",
+    "ncl-connect": "https://github.com/StudentsNCL/ncl-connect/tarball/master",
     "underscore": "^1.6.0"
   }
 }
