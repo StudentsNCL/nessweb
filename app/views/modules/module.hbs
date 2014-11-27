@@ -3,7 +3,7 @@
     <li class="active">{{module.code}}</li>
 </ol>
 <h1>{{#if module.name}}{{module.name}}{{else}}{{module.code}}{{/if}} Module Overview</h1>
-<table class="table table-condensed table-striped">
+<table class="table table-condensed table-striped" {{#if nesspersist}}data-nesspersist="true"{{/if}}>
     <thead>
         <tr>
             <th class="col-xs-5 col-sm-6">Name</th>

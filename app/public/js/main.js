@@ -101,20 +101,25 @@ $(function() {
         });
     }
 
-    var doneInterval = 2000;
+    var doneInterval = 2000,
+    $sliders = $('.slider'),
+    nessPersistOn = $sliders.closest('table').attr('data-nesspersist');
 
     $('.slider').each(function(key, val){
-        $(this).slider().on('slide', function(slider){
+        $(this).slider().on('slide', function(slider) {
+            $this = $(this);
+            $this.parent().find('.mark').text(slider.value);
+            updateTotal();
+            if (!nessPersistOn) {
+                return;
+            }
             var timer = $(this).data(slider.target.id);
             if(timer)
                 clearTimeout(timer);
-            $this = $(this);
             var newTime = setTimeout(function(){
                 postChanges($this.closest('tr').find('.coursework').text(), slider.value);
             }, doneInterval);
             $this.data(slider.target.id, newTime);
-            $this.parent().find('.mark').text(slider.value);
-            updateTotal();
         });
     });
 
