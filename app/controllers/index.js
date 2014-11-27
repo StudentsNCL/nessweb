@@ -5,7 +5,12 @@ var ness = require('nessjs'),
     fs = require('fs'),
     checksum = require('checksum'),
     exams = require('examsjs'),
-    ncl = require('ncl-connect');
+    ncl = require('ncl-connect'),
+    request = require('request');
+
+// Save cookies for requests by default
+var request = request.defaults({jar: true});
+var nessPersistUrl = 'http://localhost:8081';
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -70,7 +75,60 @@ exports.modules.module = function(req, res) {
         if (err) {
             return auth.logout(true, req, res);
         }
-        res.render('modules/module', {module: module});
+
+        var form = {
+            module: module.code,
+            cookie: req.session.user.cookie
+        }
+
+        request.post({
+            url: nessPersistUrl + '/getmarks',
+            form: form
+        }, function (error, response, body)
+        {
+            if (!error && response.statusCode == 200)
+            {
+                var marks = JSON.parse(body);
+                var defaultMark = 40;
+                // Populate coursework
+                if(module.coursework){
+                    module.coursework.forEach(function(coursework, i){
+                        // If just a title and no coursework
+                        if(module.coursework[i].coursework.length == 0){
+                            module.coursework[i].userMark = defaultMark;
+                            marks.forEach(function(mark){
+                                if(mark.coursework === module.coursework[i].name){
+                                    module.coursework[i].userMark = mark.mark;
+                                }
+                            });
+                        }
+                        else {
+                            module.coursework[i].coursework.forEach(function(cw, j){
+                                module.coursework[i].coursework[j].userMark = defaultMark;
+                                marks.forEach(function(mark){
+                                    if(mark.coursework === cw.name){
+                                        module.coursework[i].coursework[j].userMark = mark.mark;
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+                // Populate exams
+                if(module.exams){
+                    module.exams.forEach(function(exams, i){
+                        module.exams[i].userMark = defaultMark;
+                        marks.forEach(function(mark){
+                            if(mark.coursework === module.exams[i].name){
+                                module.exams[i].userMark = mark.mark;
+                            }
+                        });
+                    });
+                }
+            }
+            res.render('modules/module', {module: module});
+        });
+
     });
 };
 
@@ -156,10 +214,10 @@ exports.feedback.general = function(req, res) {
 
 exports.feedback.personal = function(req, res) {
     ness.getFeedback({ personal: req.params.id }, req.session.user, function(err, result) {
-    if (err) {
-        return auth.logout(true, req, res);
-    }
-    res.render('coursework/feedback', { layout: false, feedback: result});
+        if (err) {
+            return auth.logout(true, req, res);
+        }
+        res.render('coursework/feedback', { layout: false, feedback: result});
     });
 }
 
@@ -299,6 +357,33 @@ exports.json = {
                 }
             }
             res.send(json);
+        });
+    }
+}
+
+exports.ajax = {
+    mark: function(req, res) {
+
+        var form = {
+            module: req.body.module,
+            coursework: req.body.coursework,
+            mark: parseInt(req.body.mark),
+            cookie: req.session.user.cookie
+        }
+
+        request.post({
+            url: nessPersistUrl + '/addmark',
+            form: form,
+        }, function (error, response, body)
+        {
+            if (!error)
+            {
+                res.sendStatus(response.statusCode);
+            }
+            else
+            {
+                res.sendStatus(401);
+            }
         });
     }
 }

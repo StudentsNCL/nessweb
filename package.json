@@ -30,6 +30,7 @@
     "examsjs": "https://github.com/StudentsNCL/examsjs/tarball/master",
     "nessjs": "https://github.com/StudentsNCL/nessjs/tarball/master",
     "ncl-connect": "https://github.com/StudentsNCL/ncl-connect/tarball/master",
+    "request": "^2.48.0",
     "underscore": "^1.6.0"
   }
 }

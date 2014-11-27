@@ -101,12 +101,34 @@ $(function() {
         });
     }
 
-    $('.slider').each(function(){
+    var doneInterval = 2000;
+
+    $('.slider').each(function(key, val){
         $(this).slider().on('slide', function(slider){
-            $(this).parent().find('.mark').text(slider.value);
+            var timer = $(this).data(slider.target.id);
+            if(timer)
+                clearTimeout(timer);
+            $this = $(this);
+            var newTime = setTimeout(function(){
+                postChanges($this.closest('tr').find('.coursework').text(), slider.value);
+            }, doneInterval);
+            $this.data(slider.target.id, newTime);
+            $this.parent().find('.mark').text(slider.value);
             updateTotal();
         });
     });
+
+    function postChanges(coursework, mark){
+        $.ajax({
+            method: 'POST',
+            url: '/ajax/mark',
+            data: {
+                module: $('.breadcrumb .active').text(),
+                coursework: coursework,
+                mark: mark,
+            }
+        });
+    }
 
     updateTotal();
 
