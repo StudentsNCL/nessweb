@@ -70,7 +70,7 @@ exports.modules = function(req, res) {
 };
 
 exports.modules.module = function(req, res) {
-    var nessPersistUrl = req.app.locals.config.ness_persist_url;
+    var nessPersistUrl = req.app.locals.config.ness_persist_location;
     ness.getStages({id: req.params.id, year: req.params.year, stage: req.params.stage}, req.session.user, function(err, module) {
         if (err) {
             return auth.logout(true, req, res);
@@ -370,7 +370,7 @@ exports.json = {
 
 exports.ajax = {
     mark: function(req, res) {
-        var nessPersistUrl = req.locals.config.ness_persist_url,
+        var nessPersistUrl = req.locals.config.ness_persist_location,
         form = {
             module: req.body.module,
             coursework: req.body.coursework,
