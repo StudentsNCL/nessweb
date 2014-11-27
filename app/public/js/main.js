@@ -106,7 +106,7 @@ $(function() {
     nessPersistOn = $sliders.closest('table').attr('data-nesspersist');
 
     $('.slider').each(function(key, val){
-        $(this).slider().on('slide', function(slider) {
+        $(this).slider().on('slide slideStop', function(slider) {
             $this = $(this);
             $this.parent().find('.mark').text(slider.value);
             updateTotal();
