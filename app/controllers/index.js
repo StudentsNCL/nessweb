@@ -370,7 +370,7 @@ exports.json = {
 
 exports.ajax = {
     mark: function(req, res) {
-        var nessPersistUrl = req.locals.config.ness_persist_location,
+        var nessPersistUrl = req.app.locals.config.ness_persist_location,
         form = {
             module: req.body.module,
             coursework: req.body.coursework,
