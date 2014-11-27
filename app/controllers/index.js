@@ -10,7 +10,6 @@ var ness = require('nessjs'),
 
 // Save cookies for requests by default
 var request = request.defaults({jar: true});
-var nessPersistUrl = 'http://localhost:8081';
 
 exports.login_get = function(req, res) {
     if (auth.isLoggedIn(req)) {
@@ -71,7 +70,8 @@ exports.modules = function(req, res) {
 };
 
 exports.modules.module = function(req, res) {
-     ness.getStages({id: req.params.id, year: req.params.year, stage: req.params.stage}, req.session.user, function(err, module) {
+    var nessPersistUrl = req.app.locals.config.ness_persist_url;
+    ness.getStages({id: req.params.id, year: req.params.year, stage: req.params.stage}, req.session.user, function(err, module) {
         if (err) {
             return auth.logout(true, req, res);
         }
@@ -79,6 +79,10 @@ exports.modules.module = function(req, res) {
         var form = {
             module: module.code,
             cookie: req.session.user.cookie
+        }
+
+        if (!nessPersistUrl) {
+            return res.render('modules/module', {module: module});
         }
 
         request.post({
@@ -126,7 +130,10 @@ exports.modules.module = function(req, res) {
                     });
                 }
             }
-            res.render('modules/module', {module: module});
+            res.render('modules/module', {
+                module: module,
+                nesspersist: true
+            });
         });
 
     });
@@ -363,8 +370,8 @@ exports.json = {
 
 exports.ajax = {
     mark: function(req, res) {
-
-        var form = {
+        var nessPersistUrl = req.locals.config.ness_persist_url,
+        form = {
             module: req.body.module,
             coursework: req.body.coursework,
             mark: parseInt(req.body.mark),
@@ -374,14 +381,11 @@ exports.ajax = {
         request.post({
             url: nessPersistUrl + '/addmark',
             form: form,
-        }, function (error, response, body)
-        {
-            if (!error)
-            {
+        }, function (error, response, body) {
+            if (!error) {
                 res.sendStatus(response.statusCode);
             }
-            else
-            {
+            else {
                 res.sendStatus(401);
             }
         });
