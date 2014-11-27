@@ -2,3 +2,4 @@ node_modules/
 testHTML/
 uploads/
 Thumbs.db
+config.json

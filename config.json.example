@@ -1,0 +1,5 @@
+{
+  "http_port": 8080,
+  "session_secret": "winter is coming",
+  "ness_persist_location": ""
+}
