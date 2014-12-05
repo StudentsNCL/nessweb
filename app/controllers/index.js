@@ -159,7 +159,7 @@ exports.calendar = function(req, res) {
         // loop through each course
         for(var i = 0; i < result.length; i++) {
             for(var j = 0; j < result[i].coursework.length; j++) {
-                if(moment().diff(result[i].coursework[j].due) < 0)
+                if(moment().diff(result[i].coursework[j].due) < 0 && !result[i].coursework[j].submitted)
                     json.result.push({
                         title: result[i].coursework[j].title,
                         code: result[i].code,
