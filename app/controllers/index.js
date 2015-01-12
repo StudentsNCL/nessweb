@@ -6,7 +6,9 @@ var ness = require('nessjs'),
     checksum = require('checksum'),
     exams = require('examsjs'),
     ncl = require('ncl-connect'),
-    request = require('request');
+    request = require('request'),
+    async = require('async'),
+    db = require('./db');
 
 // Save cookies for requests by default
 var request = request.defaults({jar: true});
@@ -52,25 +54,122 @@ exports.attendance = function(req, res) {
 };
 
 exports.modules = function(req, res) {
-     ness.getStages({}, req.session.user, function(err, stages) {
+    // If posting to update
+    if (req.body.stage1) {
+        var stages = [];
+        for (var i = 1; ; i++) {
+            if(!req.body['stage' + i]){
+                break;
+            }
+            stages.push({
+                stage: i,
+                percent: req.body['stage' + i]
+            });
+        }
+        db.addStages(req.session.user.fullid, stages);
+    }
+
+    /* Get stages and calculate predicted, min & max marks
+    */
+    ness.getStages({}, req.session.user, function(err, stages) {
         if (err) {
             return auth.logout(true, req, res);
         }
-        // Hide attempt & attempt mark if they are the same
-        for(var i = 0; i < stages.length; i++){
-            for(var j = 0; j < stages[i].modules.length; j++){
-                if(stages[i].modules[j].attempt && stages[i].modules[j].attempt != '1'){
-                    stages[i].modules[j].showAttempt = true;
-                    break;
-                }
+
+        async.waterfall([
+            function(callback) {
+                db.getAllMarks(req.session.user.fullid, callback);
+            },
+            function(marks, callback) {
+                // Hide attempt & attempt mark if they are the same
+                for(var i = 0; i < stages.length; i++)(function(i){
+                    var stotal = 0;
+                    var stotalMin = 0;
+                    var stotalMax = 0;
+                    var totalCredits = 0;
+                    for(var j = 0; j < stages[i].modules.length; j++)(function(j){
+                        // If the year isnt complete then populate with predicted marks from db
+                        if(!stages[i].mark) {
+                            var total = 0;
+                            var totalMin = 0;
+                            var totalMax = 0;
+                            marks.forEach(function(mark) {
+                                if(mark.module != stages[i].modules[j].code)
+                                    return;
+                                total += mark.percent * mark.mark;
+                                // If it is an official mark then add to min mark
+                                if(mark.actual) {
+                                    totalMin += mark.percent * mark.mark;
+                                    totalMax += mark.percent * mark.mark;
+                                }
+                                else { //add 100% to max mark if no actual mark
+                                    totalMax += mark.percent * 100;
+                                }
+                            });
+                            stotal += total / 100 * stages[i].modules[j].credits;
+                            stotalMin += totalMin / 100 * stages[i].modules[j].credits;
+                            stotalMax += totalMax / 100 * stages[i].modules[j].credits;
+                            totalCredits += stages[i].modules[j].credits;
+                            stages[i].modules[j].predicted = total / 100;
+                            stages[i].modules[j].min = totalMin / 100;
+                            stages[i].modules[j].max = totalMax / 100;
+                            if(totalCredits == 120) {
+                                stages[i].predicted = Math.round(stotal / totalCredits * 10) / 10;
+                                stages[i].min = Math.round(stotalMin / totalCredits * 10) / 10;
+                                stages[i].max = Math.round(stotalMax / totalCredits * 10) / 10;
+                            }
+                        }
+                        if(stages[i].modules[j].attempt && stages[i].modules[j].attempt != '1'){
+                            stages[i].modules[j].showAttempt = true;
+                            //break;
+                        }
+                    })(j);
+                })(i);
+                callback(null);
+            },
+            function(callback) {
+
+                var markSoFar = 0;
+                var predictedMark = 0;
+                var minimumMark = 0;
+                var maximumMark = 0;
+                // Get stage percentages from db
+                db.getStages(req.session.user.fullid, function(err, dbstages) {
+                    dbstages.forEach(function(dbstage) {
+                        stages.forEach(function(stage, i) {
+                            if(dbstage.stage == stage.stage) {
+                                stages[i].percent = dbstage.percent;
+                                if(stage.mark) {
+                                    markSoFar += stage.mark * dbstage.percent / 100;
+                                }
+                                else {
+                                    predictedMark += stage.predicted * dbstage.percent / 100;
+                                    minimumMark += stage.min * dbstage.percent / 100;
+                                    maximumMark += stage.max * dbstage.percent / 100;
+                                }
+                                return;
+                            }
+                        });
+                    });
+                    predictedMark += markSoFar;
+                    minimumMark += markSoFar;
+                    maximumMark += markSoFar;
+                    var mark = {
+                        predicted: predictedMark,
+                        min: minimumMark,
+                        max: maximumMark
+                    };
+                    callback(null, mark);
+                });
             }
-        }
-        res.render('modules/modules', {stages: stages});
+        ],
+        function(err, mark){
+            res.render('modules/modules', {stages: stages, mark: mark});
+        })
     });
 };
 
 exports.modules.module = function(req, res) {
-    var nessPersistUrl = req.app.locals.config.ness_persist_location;
     ness.getStages({id: req.params.id, year: req.params.year, stage: req.params.stage}, req.session.user, function(err, module) {
         if (err) {
             return auth.logout(true, req, res);
@@ -81,18 +180,9 @@ exports.modules.module = function(req, res) {
             cookie: req.session.user.cookie
         }
 
-        if (!nessPersistUrl) {
-            return res.render('modules/module', {module: module});
-        }
-
-        request.post({
-            url: nessPersistUrl + '/getmarks',
-            form: form
-        }, function (error, response, body)
-        {
-            if (!error && response.statusCode == 200)
-            {
-                var marks = JSON.parse(body);
+        db.getMarks(req.session.user.fullid, module.code, function(error, marks) {
+            if (!error) {
+                var actualMarks = [];
                 var defaultMark = 40;
                 // Populate coursework
                 if(module.coursework){
@@ -100,36 +190,91 @@ exports.modules.module = function(req, res) {
                         // If just a title and no coursework
                         if(module.coursework[i].coursework.length == 0){
                             module.coursework[i].userMark = defaultMark;
+                            var found = false;
                             marks.forEach(function(mark){
-                                if(mark.coursework === module.coursework[i].name){
+                                if(mark.work === module.coursework[i].name){
+                                    found = true;
                                     module.coursework[i].userMark = mark.mark;
                                 }
                             });
+                            if (!found) {
+                                actualMarks.push({
+                                    work: coursework.name,
+                                    mark: defaultMark,
+                                    percent: coursework.percentage,
+                                    actual: 0
+                                });
+                            }
                         }
                         else {
                             module.coursework[i].coursework.forEach(function(cw, j){
-                                module.coursework[i].coursework[j].userMark = defaultMark;
-                                marks.forEach(function(mark){
-                                    if(mark.coursework === cw.name){
-                                        module.coursework[i].coursework[j].userMark = mark.mark;
+                                if(cw.mark) {
+                                    actualMarks.push({
+                                        work: cw.name,
+                                        mark: cw.mark.percent,
+                                        percent: cw.percentage,
+                                        actual: 1
+                                    });
+                                }
+                                else {
+                                    module.coursework[i].coursework[j].userMark = defaultMark;
+                                    var found = false;
+                                    marks.forEach(function(mark){
+                                        if(mark.work === cw.name){
+                                            found = true;
+                                            module.coursework[i].coursework[j].userMark = mark.mark;
+                                        }
+                                    });
+                                    if (!found) {
+                                        actualMarks.push({
+                                            work: cw.name,
+                                            mark: defaultMark,
+                                            percent: cw.percentage,
+                                            actual: 0
+                                        });
                                     }
-                                });
+                                }
                             });
                         }
                     });
                 }
                 // Populate exams
                 if(module.exams){
-                    module.exams.forEach(function(exams, i){
-                        module.exams[i].userMark = defaultMark;
-                        marks.forEach(function(mark){
-                            if(mark.coursework === module.exams[i].name){
-                                module.exams[i].userMark = mark.mark;
+                    module.exams.forEach(function(exam, i){
+                        // Add actual mark to db
+                        if(exam.mark) {
+                            // Temp fix to make sure mark is numeric (the one we want)
+                            if (!isNaN(parseFloat(exam.mark)) && isFinite(exam.mark)) {
+                                actualMarks.push({
+                                    work: exam.name,
+                                    mark: exam.mark,
+                                    percent: exam.percentage,
+                                    actual: 1
+                                });
                             }
-                        });
+                        }
+                        else {
+                            module.exams[i].userMark = defaultMark;
+                            var found = false;
+                            marks.forEach(function(mark){
+                                if(mark.work === exam.name){
+                                    found = true;
+                                    module.exams[i].userMark = mark.mark;
+                                }
+                            });
+                            if (!found) {
+                                actualMarks.push({
+                                work: exam.name,
+                                mark: defaultMark,
+                                percent: exam.percentage,
+                                actual: 0
+                            });
+                            }
+                        }
                     });
                 }
             }
+            db.addMarks(req.session.user.fullid, module.code, actualMarks);
             res.render('modules/module', {
                 module: module,
                 nesspersist: true
@@ -370,25 +515,11 @@ exports.json = {
 
 exports.ajax = {
     mark: function(req, res) {
-        var nessPersistUrl = req.app.locals.config.ness_persist_location,
-        form = {
-            module: req.body.module,
-            coursework: req.body.coursework,
-            mark: parseInt(req.body.mark),
-            cookie: req.session.user.cookie
+        if (!req.body.module || !req.body.coursework || !req.body.mark) {
+            return res.sendStatus(400);
         }
-
-        request.post({
-            url: nessPersistUrl + '/addmark',
-            form: form,
-        }, function (error, response, body) {
-            if (!error) {
-                res.sendStatus(response.statusCode);
-            }
-            else {
-                res.sendStatus(401);
-            }
-        });
+        db.addMark(req.session.user.fullid, req.body.module, req.body.coursework, req.body.mark, req.body.percent);
+        res.sendStatus(200);
     }
 }
 

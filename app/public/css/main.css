@@ -26,3 +26,13 @@
         width: 49%;
     }
 }
+
+.progress-sm {
+	max-width: 300px;
+}
+
+.progress-mar {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+

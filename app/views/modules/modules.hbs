@@ -1,33 +1,99 @@
 <div class="row">
-    {{#each stages}}
     <div class="col-md-12">
-        <h1>Stage {{stage}}{{#if mark}} - {{mark}}%{{/if}}</h1>
-        <table class="table table-condensed table-striped">
-            <thead>
-                <tr>
-                    <th>Module</th>
-                    {{#if showAttempt}}
-                    <th>Attempt</th>
-                    <th>Attempt Mark</th>
-                    {{/if}}
-                    <th>Final Mark</th>
-                    <th>Attendance</th>
-                </tr>
-            </thead>
-            <tbody>
-             {{#each modules}}
-                <tr>
-                    <td><a title="{{#if name}}{{code}} - {{/if}}{{credits}} Credits" href="/modules/{{year}}/{{../stage}}/{{id}}">{{#if name}}{{name}}{{else}}{{code}}{{/if}}</a></td>
-                    {{#if showAttempt}}
-                    <td>{{attempt}}</td>
-                    <td>{{attemptMark}}</td>
-                    {{/if}}
-                    <td>{{finalMark}} - {{decision}}</td>
-                    <td>{{#gte attendance.attendance 0}}{{attendance.attendance}}%{{else}}-{{/gte}}</td>
-                </tr>
-            {{/each}}
-            </tbody>
-        </table>
+        <h1>Modules</h1>
+        <div class="col-xs-12 col-sm-4 pull-right">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Show marks
+                    <span title="You must click on each module to update the marks to the latest!" class="glyphicon glyphicon-info-sign pull-right"></span>
+                </div>
+                <div class="panel-body">
+                    <div class="btn-group mark-select" role="group">
+                        <button type="button" data-selected="min" class="btn btn-danger btn-xs">Min</button>
+                        <button type="button" data-selected="predicted" class="btn btn-info btn-xs active">Predicted</button>
+                        <button type="button" data-selected="max" class="btn btn-success btn-xs">Max</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2>Overall</h2>
+        <div title="Predicted course mark" class="progress progress-sm progress-mar">
+            <div class="progress-bar progress-bar-info animated-bar incomplete" title="" role="progressbar" aria-valuenow="{{mark.predicted}}" aria-valuemin="0" aria-valuemax="100" data-width="{{mark.predicted}}" data-min="{{mark.min}}" data-max="{{mark.max}}" data-predicted="{{mark.predicted}}" style="width: 0%;">{{mark.predicted}}%</div>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#stagesModal">Stage details</button>
+        {{#each stages}}
+            <h2{{#unless mark}} class=""{{/unless}}>Stage {{stage}}{{#if mark}} - {{mark}}%{{/if}}</h2>
+
+            {{#unless mark}}{{#if predicted}}
+            <div title="" class="progress progress-sm">
+                <div class="progress-bar progress-bar-info animated-bar incomplete" title="Minimum possible mark" role="progressbar" aria-valuenow="{{predicted}}" aria-valuemin="0" aria-valuemax="100" data-width="{{predicted}}" data-min="{{min}}" data-max="{{max}}" data-predicted="{{predicted}}" style="width: 0%;">{{predicted}}%</div>
+            </div>
+            {{/if}}{{/unless}}
+            <table class="table table-condensed table-striped">
+                <thead>
+                    <tr>
+                        <th>Module</th>
+                        {{#if showAttempt}}
+                        <th>Attempt</th>
+                        <th>Attempt Mark</th>
+                        {{/if}}
+                        <th>Final{{#unless mark}}/Predicted{{/unless}} Mark</th>
+                        {{!-<th>Attendance</th>-}}
+                    </tr>
+                </thead>
+                <tbody>
+                 {{#each modules}}
+                    <tr>
+                        <td><a title="{{#if name}}{{code}} - {{/if}}{{credits}} Credits" href="/modules/{{year}}/{{../stage}}/{{id}}">{{#if name}}{{name}}{{else}}{{code}}{{/if}}</a></td>
+                        {{#if showAttempt}}
+                        <td>{{attempt}}</td>
+                        <td>{{attemptMark}}</td>
+                        {{/if}}
+                        <td>{{#if finalMark}}
+                        <div class="progress progress-mar">
+                            <div class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{finalMark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{finalMark}}" style="width: 0%;">{{finalMark}}% - {{decision}}</div>
+                        </div>
+                        {{else}}{{#if predicted}}
+                        <div class="progress progress-mar" title="This is a predicted mark based on current marks and your own input">
+                            <div class="progress-bar progress-bar-info animated-bar incomplete" role="progressbar" aria-valuenow="{{predicted}}" aria-valuemin="0" aria-valuemax="100" data-width="{{predicted}}" data-min="{{min}}" data-max="{{max}}" data-predicted="{{predicted}}" style="width: 0%;">{{predicted}}%</div>
+                        </div>
+                        {{else}}N/A{{/if}}{{/if}}</td>
+                        {{!--<td>{{#gte attendance.attendance 0}}{{attendance.attendance}}%{{else}}-{{/gte}}</td>--}}
+                    </tr>
+                {{/each}}
+                </tbody>
+            </table>
+        {{/each}}
     </div>
-    {{/each}}
+</div>
+
+<div class="modal fade" id="stagesModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Stage details</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <p>Set how much each stage is worth for your overall degree<p>
+                    {{#eachReverse stages}}
+                    <div class="form-group row col-md-12">
+                        <label class="col-md-2" for="stage{{stage}}">Stage {{stage}}</label>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <input type="text" maxlength="3" class="form-control" id="stage{{stage}}" name="stage{{stage}}" {{#if percent}}value="{{percent}}"{{/if}} placeholder="0">
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </div>
+                    {{/eachReverse}}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>

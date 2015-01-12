@@ -101,7 +101,7 @@ $(function() {
         });
     }
 
-    var doneInterval = 2000,
+    var doneInterval = 700,
     $sliders = $('.slider'),
     nessPersistOn = $sliders.closest('table').attr('data-nesspersist');
 
@@ -117,13 +117,14 @@ $(function() {
             if(timer)
                 clearTimeout(timer);
             var newTime = setTimeout(function(){
-                postChanges($this.closest('tr').find('.coursework').text(), slider.value);
+                $tr = $this.closest('tr');
+                postChanges($tr.find('.coursework').text(), slider.value, $tr.find('.percentage').text());
             }, doneInterval);
             $this.data(slider.target.id, newTime);
         });
     });
 
-    function postChanges(coursework, mark){
+    function postChanges(coursework, mark, percent){
         $.ajax({
             method: 'POST',
             url: '/ajax/mark',
@@ -131,6 +132,7 @@ $(function() {
                 module: $('.breadcrumb .active').text(),
                 coursework: coursework,
                 mark: mark,
+                percent: percent
             }
         });
     }
@@ -149,4 +151,14 @@ $(function() {
         $('#total').text(Math.round(total * 10) / 10);
         $('#totalProgress').width(total + '%');
     }
+
+    $('.mark-select button').click(function() {
+        var button = $(this)[0].dataset.selected;
+        $('.incomplete').each(function() {
+            var value = $(this).data(button);
+            var newClass = button == 'min' ? 'danger' : button == 'max' ? 'success' : 'info';
+            $(this)[0].className = $(this)[0].className.replace(/(progress-bar-)[a-z]+/, '$1' + newClass);
+            $(this).width(value + '%').text(value + '%');
+        })
+    })
 });

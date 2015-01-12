@@ -1,5 +1,5 @@
 node_modules/
 testHTML/
 uploads/
-Thumbs.db
+*.db
 config.json
