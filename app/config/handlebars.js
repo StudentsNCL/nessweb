@@ -1,4 +1,4 @@
-var handlebars = require('express3-handlebars'),
+var handlebars = require('express-handlebars'),
     moment = require('moment');
 
 module.exports = function (app) {
