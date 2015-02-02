@@ -1,5 +1,4 @@
 node_modules/
 testHTML/
-uploads/
 *.db
 config.json

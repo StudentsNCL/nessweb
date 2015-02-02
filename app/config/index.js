@@ -37,9 +37,6 @@ app.use(session({
                 })
 );
 app.use(bodyParser());
-// Create uploads folder if it doesnt exist
-if(!fs.existsSync('uploads'))
-    fs.mkdirSync('uploads');
 
 require('./handlebars')(app);
 

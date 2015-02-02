@@ -49,7 +49,7 @@
                         <td>{{attempt}}</td>
                         <td>{{attemptMark}}</td>
                         {{/if}}
-                        <td>{{#if finalMark}}
+                        <td>{{#isNumber finalMark}}
                         <div class="progress progress-mar">
                             <div class="progress-bar animated-bar" role="progressbar" aria-valuenow="{{finalMark}}" aria-valuemin="0" aria-valuemax="100" data-width="{{finalMark}}" style="width: 0%;">{{finalMark}}% - {{decision}}</div>
                         </div>
@@ -57,7 +57,7 @@
                         <div class="progress progress-mar" title="This is a predicted mark based on current marks and your own input">
                             <div class="progress-bar progress-bar-info animated-bar incomplete" role="progressbar" aria-valuenow="{{predicted}}" aria-valuemin="0" aria-valuemax="100" data-width="{{predicted}}" data-min="{{min}}" data-max="{{max}}" data-predicted="{{predicted}}" style="width: 0%;">{{predicted}}%</div>
                         </div>
-                        {{else}}N/A{{/if}}{{/if}}</td>
+                        {{else}}N/A{{/if}}{{/isNumber}}</td>
                         {{!--<td>{{#gte attendance.attendance 0}}{{attendance.attendance}}%{{else}}-{{/gte}}</td>--}}
                     </tr>
                 {{/each}}

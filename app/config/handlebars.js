@@ -96,6 +96,12 @@ module.exports = function (app) {
                 }
 
                 return ret;
+            },
+            isNumber: function(number, options) {
+                if(number && !isNaN(number))
+                    return options.fn(this);
+                else
+                    return options.inverse(this);
             }
         },
     }));

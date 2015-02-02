@@ -57,10 +57,7 @@ exports.modules = function(req, res) {
     // If posting to update
     if (req.body.stage1) {
         var stages = [];
-        for (var i = 1; ; i++) {
-            if(!req.body['stage' + i]){
-                break;
-            }
+        for (var i = 1; req.body['stage' + i]; i++) {
             stages.push({
                 stage: i,
                 percent: req.body['stage' + i]
@@ -104,6 +101,8 @@ exports.modules = function(req, res) {
                                 }
                                 else { //add 100% to max mark if no actual mark
                                     totalMax += mark.percent * 100;
+                                    //Set min to be 40% as this is pass rate
+                                    totalMin += mark.percent * 40;
                                 }
                             });
                             stotal += total / 100 * stages[i].modules[j].credits;
@@ -139,7 +138,7 @@ exports.modules = function(req, res) {
                         stages.forEach(function(stage, i) {
                             if(dbstage.stage == stage.stage) {
                                 stages[i].percent = dbstage.percent;
-                                if(stage.mark) {
+                                if(stage.mark && !isNaN(stage.mark)) {
                                     markSoFar += stage.mark * dbstage.percent / 100;
                                 }
                                 else {
